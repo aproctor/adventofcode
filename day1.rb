@@ -8,10 +8,8 @@ num_instructions = 0
 
 first_time_on_base_1 = -1
 File.open('day1.data').each do |line|
-  if(line.nil?)
-    puts "what?"
-    continue
-  end
+  continue if(line.nil?)
+  
   line.each_char do |c|
     num_instructions += 1
     if(c == '(')
