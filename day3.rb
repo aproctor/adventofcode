@@ -20,8 +20,8 @@ class Santa
     elsif(direction == 'v')
       @cur_y -= 1
     end
-    key = "#{@cur_x}#{DELIM}#{@cur_y}"
 
+    key = "#{@cur_x}#{DELIM}#{@cur_y}"
     house_map[key] = house_map[key].to_i + 1
   end
 end
