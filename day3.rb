@@ -30,7 +30,7 @@ end
 # Part1 - 1 santa
 # first house starts off with a single present
 houses = {}
-houses["0#{DELIM}0"] = 1
+houses["0|0"] = 1
 santa = Santa.new
 
 File.open('day3.data').each do |line|
@@ -46,7 +46,7 @@ puts "Part 1 Num Visited: #{houses.keys.count}"
 # Part2 - 2 santas
 #both drop off initial presents at the first house
 houses = {}
-houses["0#{DELIM}0"] = 2
+houses["0|0"] = 2
 santas = [Santa.new, Santa.new]
 
 File.open('day3.data').each do |line|
