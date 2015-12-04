@@ -1,4 +1,4 @@
-#!ruby
+#!/usr/bin/env ruby
 # Day 4
 # See http://adventofcode.com/day/4
 
@@ -15,7 +15,7 @@ def find_lowest_num(key, pattern)
 			return num
 		end
 
-		num += 1		
+		num += 1
 	end
 
 	return nil
