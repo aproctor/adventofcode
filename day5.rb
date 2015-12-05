@@ -41,7 +41,6 @@ def is_nice_v2?(word)
 	letter_count.each do |k,v|		
 		if(v > 1 && word.match("#{k}.#{k}"))
 			found_match = true
-			match = word.match("#{k}.#{k}")
 			break
 		end
 	end
