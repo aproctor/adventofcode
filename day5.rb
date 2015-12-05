@@ -72,18 +72,25 @@ def is_nice_v2?(word)
 	#Search for letters combos that aren't overlapping
 	last_pair = nil
 	last_index = -1
-	tripplet = false
+	last_pair_overlapped = false
 	all_pairs.sort_by {|_key, value| value}.to_h.each do |i, pair|
-		return true if(pair == last_pair && (last_index-i).abs > 1)
 		if(pair == last_pair)
-			if(tripplet)
+			#check if pair overlaps
+			if((last_index-i).abs > 1)				
+				#no overlap
+				return true
+			elsif(last_pair_overlapped)
+				#overlap, but the pair before that also overlapped eg: wwww
 				return true
 			else
-				tripplet = true
+				last_pair_overlapped = true
 			end
 		else
-			tripplet = false
+			#pairs don't match
+			#we need to unset the tripplet detecting bool
+			last_pair_overlapped = false
 		end
+
 		last_pair = pair
 		last_index = i
 	end	
