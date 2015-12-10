@@ -9,7 +9,6 @@ def look_and_say(line)
   num_found = 0
 
   buffer = []
-  line << "X"
   line.each_char do |c|
     if(c != last_char && last_char.nil? == false)
       buffer << num_found
@@ -20,6 +19,10 @@ def look_and_say(line)
     last_char = c
     num_found += 1
   end
+
+  #last found
+  buffer << num_found
+  buffer << last_char
 
   return buffer.join('')
 end
