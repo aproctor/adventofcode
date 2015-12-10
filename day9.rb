@@ -6,6 +6,7 @@
 
 class City
   @@city_map = {}
+  @@shortest_full_route_found = 9999999999
 
   attr_reader :routes, :name
 
@@ -29,9 +30,11 @@ class City
   end
 
   def self.shortest_distance
-    visted_cities = {}
     @@city_map.each do |name,city|
+      visted_cities = {}
       #TODO traveling santa
+
+      # find shortest distance to each other city in the city map through all other cities
     end
   end
 
