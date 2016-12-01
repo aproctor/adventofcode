@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # Day 1 2016
-# See http://adventofcode.com/day/1
+# See http://adventofcode.com/2016/day/1
 
 puts "Advent of Code 2016 day 1"
 
@@ -14,9 +14,6 @@ direction = 0
 
 known_locations = {}
 first_double = nil
-
-known_locations["0,0"] = 0
-
 
 first_time_on_base_1 = -1
 File.open('day1.data').each do |line|
@@ -46,7 +43,7 @@ File.open('day1.data').each do |line|
         else #W
           cur_y -= 1
         end
-        
+
         key = "#{cur_x},#{cur_y}"      
         if(first_double.nil? && known_locations.key?(key))
           first_double = key
@@ -65,8 +62,8 @@ end
 
 d = cur_x.abs + cur_y.abs
 
-puts "#{cur_x},#{cur_y} #{d} blocks away"
-puts "first double is #{first_double}. #{known_locations[first_double]} blocks away"
+puts "Final destination is #{cur_x},#{cur_y} #{d} blocks away"
+puts "First double is #{first_double}. #{known_locations[first_double]} blocks away"
 
 
 
