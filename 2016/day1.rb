@@ -35,24 +35,28 @@ File.open('day1.data').each do |line|
         direction -= 1
       end
       direction = direction % 4
-      
-      if(direction == 0) #N
-        cur_x += moves
-      elsif(direction == 1) #E
-        cur_y += moves
-      elsif(direction == 2) #S
-        cur_x -= moves
-      else #W
-        cur_y -= moves
+
+      moves.times do 
+        if(direction == 0) #N
+          cur_x += 1
+        elsif(direction == 1) #E
+          cur_y += 1
+        elsif(direction == 2) #S
+          cur_x -= 1
+        else #W
+          cur_y -= 1
+        end
+        
+        key = "#{cur_x},#{cur_y}"      
+        if(first_double.nil? && known_locations.key?(key))
+          first_double = key
+        end
+        #any value will do, but we'll store distance because it's useful
+        known_locations[key] = cur_x.abs + cur_y.abs
+
       end
 
-      key = "#{cur_x},#{cur_y}"
       
-      if(first_double.nil? && known_locations.key?(key))
-        first_double = key
-      end
-      #any value will do, but we'll store distance because it's useful
-      known_locations[key] = cur_x.abs + cur_y.abs
       
     end
 
