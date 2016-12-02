@@ -21,13 +21,13 @@ File.open('day2.data').each do |line|
     
     case instruction
     when 'U'
-      cur_x -= 1
-    when 'D'
-      cur_x += 1
-    when 'L'
       cur_y -= 1
-    when 'R'
+    when 'D'
       cur_y += 1
+    when 'L'
+      cur_x -= 1
+    when 'R'
+      cur_x += 1
     end
 
     #clamp values, not on latest ruby yet :(
