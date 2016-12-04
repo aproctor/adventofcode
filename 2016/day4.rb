@@ -12,7 +12,6 @@ p1_sum = 0
 a_ord = 'a'.ord
 z_ord = 'z'.ord
 num_chars = z_ord - a_ord + 1
-found_sector = nil
 
 File.open('day4.data').each do |line|
   continue if(line.nil?)
@@ -53,5 +52,3 @@ File.open('day4.data').each do |line|
 end
 
 puts "part1 sum of sector codes #{p1_sum}"
-
-#puts "part2 sector for stuff #{found_sector.to_i}"
