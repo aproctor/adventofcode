@@ -7,6 +7,13 @@ puts "Advent of Code 2016 day 4"
 
 #Part 1 - sum of sector ids
 p1_sum = 0
+
+#Part 2 - ordenance of characters
+a_ord = 'a'.ord
+z_ord = 'z'.ord
+num_chars = z_ord - a_ord + 1
+found_sector = nil
+
 File.open('day4.data').each do |line|
   continue if(line.nil?)
 
@@ -17,13 +24,20 @@ File.open('day4.data').each do |line|
   sector = md[2].to_i
   checksum = md[3]
 
+  shifted_vals = []
   md[1].each_char do |c|
-    next if c == '-'
-
-    if(matched_chars.key?(c))
-      matched_chars[c] = matched_chars[c] + 1
+    if c == '-'
+      shifted_vals.push(' ')
     else
-      matched_chars[c] = 1
+      #count character for checksum
+      if(matched_chars.key?(c))
+        matched_chars[c] = matched_chars[c] + 1
+      else
+        matched_chars[c] = 1
+      end
+
+      #translate character assuming it's valid
+      shifted_vals.push((((c.ord + sector - a_ord) % num_chars) + a_ord).chr)
     end
   end
 
@@ -31,6 +45,8 @@ File.open('day4.data').each do |line|
   top_chars = matched_chars.sort_by { |letter, count| [-count,letter]}.to_h.keys[0..4].join('')
   if(top_chars == checksum)
     p1_sum += sector
+    
+    puts "#{shifted_vals.join('')} - #{sector}"
   end  
 
 
@@ -38,4 +54,4 @@ end
 
 puts "part1 sum of sector codes #{p1_sum}"
 
-
+#puts "part2 sector for stuff #{found_sector.to_i}"
