@@ -3,7 +3,7 @@
 # See http://adventofcode.com/2016/day/5
 require 'digest'
 
-puts "Advent of Code 2016 day 5"
+puts "Advent of Code 2016 day 5 part 1"
 
 
 #part 1 - find 8-digit door code through searching increasing hashes
