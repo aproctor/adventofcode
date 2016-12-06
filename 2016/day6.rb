@@ -32,9 +32,12 @@ end
 
 #sort by count (desc), then alphabetical (asc), then take the first 5 keys and make a checksum string
 top_chars = []
+least_chars = []
 char_hashes.each_with_index do |h, i|
   top_chars[i] = h.sort_by { |letter, count| -count}.to_h.keys.first
+  least_chars[i] = h.sort_by { |letter, count| count}.to_h.keys.first
 end  
 
 
 puts "part1 #{top_chars.join('')}"
+puts "part2 #{least_chars.join('')}"
