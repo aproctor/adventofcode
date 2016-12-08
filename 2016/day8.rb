@@ -57,8 +57,8 @@ def rotate(grid, type, offset, amount)
 
 end
 
-def print_grid(grid, w, h)
-  h.times do |r|    
+def print_grid(grid)
+  grid.length.times do |r|    
     puts "#{grid[r].join('')}"
   end
 end
@@ -68,18 +68,18 @@ end
 P1_COLS = 50
 P1_ROWS = 6
 
-p1_grid = create_grid(P1_COLS, P1_ROWS)
+grid = create_grid(P1_COLS, P1_ROWS)
 
 File.open('day8.data').each do |line|
   continue if(line.nil?)
 
   rect_instruction = /rect (\d+)x(\d+)/.match(line) 
   if(!rect_instruction.nil?)    
-    add_rect(p1_grid, rect_instruction[1].to_i,rect_instruction[2].to_i)
+    add_rect(grid, rect_instruction[1].to_i,rect_instruction[2].to_i)
   else
     rotate_instruction = /rotate (row|column) (x|y)=(\d+) by (\d+)/.match(line) 
     if(!rotate_instruction.nil?)
-      rotate(p1_grid, rotate_instruction[1].to_sym,rotate_instruction[3].to_i,rotate_instruction[4].to_i)
+      rotate(grid, rotate_instruction[1].to_sym,rotate_instruction[3].to_i,rotate_instruction[4].to_i)
     end
   end
  
@@ -88,10 +88,10 @@ end
 num_lit = 0
 P1_ROWS.times do |r|
   P1_COLS.times do |c|
-    num_lit += 1 if(p1_grid[r][c] == "#")
+    num_lit += 1 if(grid[r][c] == "#")
   end
 end
 
-puts "\n"
-print_grid(p1_grid, P1_COLS, P1_ROWS)
 puts "\npart 1 - number of lit pixels #{num_lit}"
+puts "part 2 - code:"
+print_grid(grid)
