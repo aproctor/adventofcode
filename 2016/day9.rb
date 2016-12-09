@@ -21,6 +21,8 @@ File.open('day9.data').each do |line|
   repeat_times = 0
   repeat_section = ""  
 
+  #f.write(line)
+
   line.each_char do |c|
     #skip whitespace
     next if(/\s/.match(c))
@@ -32,6 +34,8 @@ File.open('day9.data').each do |line|
         repeat_chars = md[1].to_i
         repeat_times = md[2].to_i
         in_instruction = false
+
+        repeat_section = ""
         in_repeat_section = true
         next
       else
@@ -59,6 +63,8 @@ File.open('day9.data').each do |line|
       
     end
   end
+
+  #f.write("\n")
 
   
  
