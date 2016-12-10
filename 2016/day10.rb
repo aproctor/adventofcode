@@ -21,7 +21,13 @@ class Factory
   end
 
   def take_output(index, val)
+    #puts "output[#{index}] = #{val}"
     @outputs[index] = val
+  end
+
+  def part_2()
+    vals = [@outputs[0],@outputs[1],@outputs[2]]
+    puts "Part 2 - #{vals} multiplied is #{vals[0]*vals[1]*vals[2]}"
   end
 end
 
@@ -70,7 +76,7 @@ class Bot
 
     #puts "Bot-#{@number} took #{chip}"
     if(@chips[0] == 17 and @chips[1] == 61)
-      puts "Part 1 Bot comp: #{@number}" 
+      puts "Part 1 - Bot comp: #{@number}" 
     else
       #puts "Bot-#{@number} comparing #{@chips[0]} and #{@chips[1]}"
     end
@@ -80,7 +86,6 @@ class Bot
 end
 
 factory = Factory.new
-answer = 0
 File.open('day10.data').each do |line|
   continue if(line.nil?)
 
@@ -104,5 +109,5 @@ File.open('day10.data').each do |line|
 
 end
 
-puts "part 1 - #{answer}"
+factory.part_2
 
