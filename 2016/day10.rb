@@ -21,7 +21,7 @@ class Factory
   end
 
   def take_output(index, val)
-    outputs[index] = val
+    @outputs[index] = val
   end
 end
 
@@ -42,13 +42,38 @@ class Bot
 
   def try_instruction()
     if(!@instruction.nil? && @chips.length == MAX_CHIPS)      
-      puts "comparing #{@chips}"
+
+      if(@chips[0] == 17 and @chips[1] == 61)
+        puts "Part 1 Bot comp: #{@number}" 
+      else
+        #puts "#{@instruction} - #{@chips}"
+      end
+
+      #low chip
+      if(@instruction[0] == :output)
+        @factory.take_output(@instruction[1], @chips[0])
+      elsif(@instruction[0] == :bot)
+        @factory.find_bot(@instruction[1]).take_chip(@chips[0])
+      end
+
+      #high chip
+      if(@instruction[3] == :output)
+        @factory.take_output(@instruction[4], @chips[1])
+      elsif(@instruction[3] == :bot)
+        @factory.find_bot(@instruction[4]).take_chip(@chips[1])
+      end
+
+      @chips = []
+      @instruction = nil
+
     end
   end
 
   def take_chip(chip)
     @chips << chip
     @chips = @chips.sort
+
+    #puts "Bot-#{@number} took #{chip}"
 
     try_instruction()    
   end
@@ -73,6 +98,8 @@ File.open('day10.data').each do |line|
     source_bot = factory.find_bot(delivery[1].to_i)
     source_bot.instruction = [delivery[2].to_sym,delivery[3].to_i,delivery[4].to_sym,delivery[5].to_i]
   end
+
+  puts "ERROR - #{line}" if(delivery.nil? && assignment.nil?)
   
 
 end
