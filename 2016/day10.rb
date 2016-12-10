@@ -42,12 +42,7 @@ class Bot
 
   def try_instruction()
     if(!@instruction.nil? && @chips.length == MAX_CHIPS)      
-
-      if(@chips[0] == 17 and @chips[1] == 61)
-        puts "Part 1 Bot comp: #{@number}" 
-      else
-        #puts "#{@instruction} - #{@chips}"
-      end
+      #puts "Bot-#{@number} performs #{@instruction}"
 
       #low chip
       if(@instruction[0] == :output)
@@ -57,10 +52,10 @@ class Bot
       end
 
       #high chip
-      if(@instruction[3] == :output)
-        @factory.take_output(@instruction[4], @chips[1])
-      elsif(@instruction[3] == :bot)
-        @factory.find_bot(@instruction[4]).take_chip(@chips[1])
+      if(@instruction[2] == :output)
+        @factory.take_output(@instruction[3], @chips[1])
+      elsif(@instruction[2] == :bot)
+        @factory.find_bot(@instruction[3]).take_chip(@chips[1])
       end
 
       @chips = []
@@ -74,6 +69,11 @@ class Bot
     @chips = @chips.sort
 
     #puts "Bot-#{@number} took #{chip}"
+    if(@chips[0] == 17 and @chips[1] == 61)
+      puts "Part 1 Bot comp: #{@number}" 
+    else
+      #puts "Bot-#{@number} comparing #{@chips[0]} and #{@chips[1]}"
+    end
 
     try_instruction()    
   end
