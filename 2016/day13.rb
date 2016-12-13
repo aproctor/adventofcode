@@ -47,6 +47,21 @@ pf = Ruby::Pathfinding::PathFinder.new(sa,start_loc,destination)
 path = pf.find_path
 #pf.p_search_area
 
-
-
 puts "part 1 - #{path.length}"
+
+#part 2 - distinct places within 50 paces
+valid_location_count = 1
+grid_size.times do |x|
+  grid_size.times do |y|
+    if(grid[x][y] == 0)
+      destination = Ruby::Pathfinding::Point.new(x,y)
+      pf = Ruby::Pathfinding::PathFinder.new(sa,start_loc,destination)
+      path = pf.find_path
+      if(!path.nil? && path.length <= 50)
+        valid_location_count += 1
+      end
+    end
+  end
+end
+
+puts "part 2 - valid locations within 50 paces #{valid_location_count}"

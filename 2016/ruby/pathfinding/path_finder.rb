@@ -53,7 +53,7 @@ module Ruby
             end
             path.reverse!
             ##path.each {|p_c| print "#{p_c.x},#{p_c.y} "}
-            puts ''
+            #puts ''
             break;
           end
           closed.push( low_f )
