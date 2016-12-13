@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # Day 13 2016
 # See http://adventofcode.com/2016/day/13
+
+#A cleaner implementation could be done (especially part 2), but i just grabbed this A* library
 require "./ruby/pathfinding/version"
 require "./ruby/pathfinding/path_finder"
 require "./ruby/pathfinding/search_area"
@@ -13,8 +15,6 @@ input = 1362
 min_steps = 0
 
 #build grid with padding
-start_pos = [1,1]
-target = [31,39]
 grid_size = 50
 
 grid = []
