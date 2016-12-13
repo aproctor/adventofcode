@@ -24,24 +24,25 @@ INITIAL_STATE = [0,
   1,2,
   1,2]
 
-# search all the moves, reject failure branches, reject longer than min distance paths
+#given an array of at least size 2, find all unique combinations
+def unique_pairs(array)
+  valid_pairs = {}
+  array.each do |i|
+    array.each do |j|
+      if(i != j)
+        tuple = [i,j].sort
+        valid_pairs["#{tuple.join(',')}"] = tuple
+      end
+    end
+  end
 
-# of items on floor
-# - take between 0-3 items
-# - move up or down 1 floor
-# - repeat
-
-
+  return valid_pairs.values
+end
 
 class FactoryState
   NUM_FLOORS = 4
 
-  #I know a solution exists with around 13 moves, let's reject anything above 20 moves
-  @@minimum_path = 20
-
-  def initialize(moves, factory_state)
-    @moves = 0
-
+  def initialize(factory_state)
     #Factory descriptor is an array defining the positions of all tech    
     @state = factory_state
   end
@@ -84,22 +85,107 @@ class FactoryState
     return true
   end  
 
+  def key_string
+    return @state.join(',')
+  end
+
   def print_layout
     puts "Factory state: #{@state}"
     #puts "Valid?: #{valid?()}, Solved?:#{solved?()}"
   end
 
-  def shortest_solution()
-    if(solved?())
-      @@minimum_path = @moves
-      return @moves
-    else
-      #No solution found, try all child moves until a shorter value is found
+  #BFS search for possible valid moves after this one
+  def possible_moves
+    valid_moves = []
+
+    #Elevator can be up or down
+    2.times do |e|
+      direction = (e == 1) ? -1 : 1
+      target_floor = @state[0] + direction      
+
+      #only evaluate values with valid target floors to save memory
+      #(even though it's bounds protected in valid?()
+      if(target_floor >= 0 && target_floor < NUM_FLOORS)
+        #create a reference array updating the position of the elevator
+        elevator_state = Array.new(@state)
+        elevator_state[0] = target_floor
+
+        #permutate through possible options to take in the current floor
+        tech_on_floor = []
+        (1..@state.length).each do |i|
+          tech_on_floor << i if(@state[i] == @state[0])
+        end
+
+        if(tech_on_floor.length >= 2)
+          #choose every combination of 2 items in the tech
+          unique_pairs(tech_on_floor).each do |pair|
+            s = Array.new(elevator_state)
+            s[pair[0]] = target_floor
+            s[pair[1]] = target_floor
+            fs = FactoryState.new(s)
+            valid_moves << fs if(fs.valid?)
+          end
+        end
+        if(tech_on_floor.length >= 1)
+          #choose every combination of 1 item in the tech
+          tech_on_floor.each do |i|
+            s = Array.new(elevator_state)
+            s[i] = target_floor
+            fs = FactoryState.new(s)    
+
+            valid_moves << fs if(fs.valid?)
+          end
+        end
+      end
 
     end
-  end
 
+    return valid_moves
+  end
 end
 
-init_factory = FactoryState.new(0, INITIAL_STATE)
-init_factory.shortest_solution()
+#I know a solution exists with around 13 moves, let's reject anything above 20 moves
+MAXIMUM_MOVES = 200
+moves = 0
+solved = false
+
+init_factory = FactoryState.new(INITIAL_STATE)
+possible_states = [init_factory]
+
+checked_states = {}
+MAXIMUM_MOVES.times do |moves|  
+  break if(possible_states.empty? || solved)
+  
+  possible_states.each do |fs|
+    #fs.print_layout()
+    
+    if(fs.solved?)      
+      puts "Solved after #{moves} moves"
+      fs.print_layout
+      solved = true
+      break      
+    elsif(!fs.valid?)
+      puts "WTF invalid GTFO"
+      break
+    end
+
+    checked_states[fs.key_string] = true
+  end
+
+  #no solution found
+  new_states = {}
+  possible_states.each do |fs|
+    fs.possible_moves.each do |ns|  
+      if(!checked_states.key?(ns.key_string))    
+        new_states[ns.key_string] = ns
+      end
+    end
+  end
+  possible_states = new_states.values
+
+  puts "#{moves} - #{possible_states.size}\n"
+end
+
+if(!solved)  
+  puts "unable to solve after #{MAXIMUM_MOVES} moves, increase maximum"
+end
