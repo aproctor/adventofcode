@@ -16,7 +16,8 @@ discs = [
   {positions: 19, start: 4},
   {positions: 13, start: 2},
   {positions: 7, start: 2},
-  {positions: 5, start: 0}
+  {positions: 5, start: 0},
+  {positions: 11, start: 0}
 ]
 
 MAX_ITERATIONS = 10000000
