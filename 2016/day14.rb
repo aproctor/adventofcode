@@ -4,71 +4,88 @@
 
 require 'digest/md5'
 
-TARGET_KEY = 64
-MAX_ATTEMPTS = 1000000
+TARGET_KEYS = 64
+MAX_ATTEMPTS = 2500000
 MAX_KEY_DISTANCE = 1000
+HASH_TIMES = 2017
 
-#salt = "cuanljph"
-salt = "abc"
+salt = "cuanljph"
+#salt = "abc"
 
 #result = 
 
 found_keys = []
 potential_keys = {}
 
-def key_data(key, i)
-	trips = []
-	quints = []
+key_cache = {}
+key_data_cache = {}
 
-	prev_char = ''
-	repeat_count = 0
-	key.each_char do |c|
-		if(c == prev_char)
-			repeat_count += 1
-			if(repeat_count == 2)
-				trips << c
-			elsif(repeat_count == 4)
-				quints << c
+def key_data(key, i, cache)
+	if(!cache.key?(key))
+		trips = []
+		quints = []
+
+		prev_char = ''
+		repeat_count = 0
+		key.each_char do |c|
+			if(c == prev_char)
+				repeat_count += 1
+				if(repeat_count == 2 && trips.empty?)
+					trips << c
+				elsif(repeat_count == 4)
+					quints << c
+				end
+			else
+				repeat_count = 0
 			end
-		else
-			repeat_count = 0
+
+			prev_char = c
 		end
 
-		prev_char = c
+		cache[key] = {num: i, key: key, trips: trips, quints: quints}
 	end
 
-	return {num: i, key: key, trips: trips, quints: quints}
+	return cache[key]
 end	
 
+def get_key(input, key_cache)
+	if(!key_cache.key?(input))
+		key = input
+		HASH_TIMES.times do |i|
+		 key = Digest::MD5.hexdigest(key)
+		end
+		key_cache[input] = key
+	end
+	return key_cache[input]
+end
+
+max_index = nil
 MAX_ATTEMPTS.times do |num|
+	break if(!max_index.nil? && num > max_index)
+
+	puts "#{num} - #{found_keys.length}" if num % 1000 == 0
 	
-	key = Digest::MD5.hexdigest("#{salt}#{num}")
+	key = get_key("#{salt}#{num}", key_cache)
+	kd = key_data(key, num, key_data_cache)
 
-	kd = key_data(key, num)
-
-	match_found_for_key = false
-	kd[:quints].each do |q|
-		break if(match_found_for_key)
-		potential_keys.each do |k,v|
-			if(v[:trips].include?(q))
-				#puts "#{v} found for #{kd}"
-				found_keys << v
-				match_found_for_key = true
+	if(!kd[:trips].empty?)
+		t = kd[:trips].first
+		1000.times do |x|			
+			key2 = get_key("#{salt}#{num+x+1}", key_cache)
+			kd2 = key_data(key2, num+x+1, key_data_cache)
+			if(kd2[:quints].include?(t))
+				puts "found one #{num}"
+				found_keys << kd
 				break
 			end
 		end
 	end
 
-	if(!kd[:trips].empty?)
-		potential_keys[num] = kd
-	end
-
-	if(potential_keys.key?(num - MAX_KEY_DISTANCE))
-		potential_keys.delete(num - MAX_KEY_DISTANCE)
-	end	
-
+	break if(found_keys.length >= TARGET_KEYS)
 end	
 
-indexes = found_keys.map { |k| k[:num]}.sort
-puts "#{indexes[63]}"
-#puts "part 1 - #{TARGET_KEY}th key index: #{indexes[TARGET_KEY]}"
+indexes = found_keys.map { |k| k[:num]}
+puts "#{indexes}"
+puts "#{indexes[TARGET_KEYS-1]}"
+
+#puts "part 1 - #{TARGET_KEYS}th key index: #{indexes[TARGET_KEYS]}"
