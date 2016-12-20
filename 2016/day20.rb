@@ -4,6 +4,8 @@
 
 puts "Advent of Code 2016 day 20"
 
+MAX_IP_VALUE = 4294967295
+
 ranges = []
 alt_min = 0
 File.open('day20.data').each do |line|
@@ -47,13 +49,13 @@ File.open('day20.data').each do |line|
   end
 end
 
-min_max = 4294967295
-max_min = -1
-ranges.each do |rg|
-  max_min = rg[0] if(rg[0] > max_min)
+min_max = MAX_IP_VALUE
+num_blocked = 0
+ranges.each do |rg|  
   min_max = rg[1] if(rg[1] < min_max)
+  num_blocked += (rg[1] - rg[0] + 1)
   #puts "r: #{rg}"
 end
-puts "max_min #{max_min}"
 puts "min_max #{min_max}"
+puts "#{num_blocked} ips blocked, #{MAX_IP_VALUE - num_blocked} available"
 
