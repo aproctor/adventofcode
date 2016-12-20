@@ -25,6 +25,12 @@ def dragon_string(a)
 end
 
 #assumes an even length string for valid results
+#
+# Disclaimer: this code is bad, but needed to be optimized. It was late at night.
+# First problem was part 2 caused an out of mem exception. Then when i tried to
+# optimize by replacing the input inline, I think I ended up causing a great
+# deal of string concatenation instead of character replacement. I ended up
+# bypassing the problem by breaking the strings down to reasonably sized chunks.
 def checksum(input)  
   limit = input.length
   
