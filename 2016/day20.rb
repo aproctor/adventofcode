@@ -10,16 +10,19 @@ ranges = []
 alt_min = 0
 File.open('day20.data').each do |line|
   next if(line.nil?)
-  
+
   md = line.match(/(\d+)-(\d+)/)
   new_range = [md[1].to_i,md[2].to_i]
 
   found_existing_range = false
   deprecated_ranges = []
   ranges.each_with_index do |old_range, i|
-    if(old_range[0] <= new_range[0] && old_range[1] >= new_range[1])      
-      #encapsulated, discard new range      
+    if(old_range[0] <= new_range[0] && old_range[1] >= new_range[1])
+      #encapsulated, discard new range
       found_existing_range = true
+    elsif (new_range[0] <= old_range[0] && new_range[1] >= old_range[1])
+      #new range encapsulates old range, discard old range
+      deprecated_ranges << i
     elsif(old_range[0] < new_range[0] && old_range[1] + 1 >= new_range[0])
       # old range includes lower bound, but implicitly not upper bound
       # eg:
@@ -31,7 +34,7 @@ File.open('day20.data').each do |line|
     elsif(old_range[0] <= new_range[1] + 1 && old_range[1] > new_range[1])
       # old range includes upper bound, but implicitly not lower bound
       # o[4-9] + n[2-6]
-      # becomes [2-9]      
+      # becomes [2-9]
       new_range[1] = old_range[1]
       deprecated_ranges << i
     end
@@ -51,10 +54,10 @@ end
 
 min_max = MAX_IP_VALUE
 num_blocked = 0
-ranges.each do |rg|  
+ranges.each do |rg|
   min_max = rg[1] if(rg[1] < min_max)
   num_blocked += (rg[1] - rg[0] + 1)
-  #puts "r: #{rg}"
+  puts "#{rg.join(',')}"
 end
 puts "min_max #{min_max}"
 puts "#{num_blocked} ips blocked, #{MAX_IP_VALUE - num_blocked} available"
