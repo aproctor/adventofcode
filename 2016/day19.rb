@@ -37,12 +37,23 @@ def brute_forcephus_winner(n)
   last_elf.next = first_elf
 
   elf = first_elf
-  while(elf.next != elf)
-    #puts "kill #{elf.next.value}"
-    next_next = elf.next.next
-    elf.next = next_next
+  num_left = n
+  while(num_left > 1)
+    
+    #shift to find elf to kill
+    kill_shift = (num_left / 2).floor
+    prev_elf = next_elf = elf
+    kill_shift.times do |k|
+      prev_elf = next_elf
+      next_elf = next_elf.next
+    end
+    #kill off "next_elf" by pointing past him and excluding him from the chain
+    prev_elf.next = next_elf.next
 
+    num_left -= 1
     elf = elf.next
+
+    puts "N: #{num_left}" if num_left % 100 == 0
   end
 
   return elf.value
@@ -56,6 +67,7 @@ class Elf
   end
 end
 
-num_elves = 41 #3017957
+num_elves = 10 #3017957
 puts "Part 1 - with #{num_elves} elves #{josephus_winner(num_elves)} wins"
 puts "Part 2 - with #{num_elves} elves #{brute_forcephus_winner(num_elves)} wins"
+
