@@ -60,5 +60,5 @@ ranges.each do |rg|
   puts "#{rg.join(',')}"
 end
 puts "min_max #{min_max}"
-puts "#{num_blocked} ips blocked, #{MAX_IP_VALUE - num_blocked} available"
+puts "#{num_blocked} ips blocked, #{MAX_IP_VALUE + 1 - num_blocked} available"
 
