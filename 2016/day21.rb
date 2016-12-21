@@ -68,8 +68,11 @@ def rotate_by_index_of_char(key, c)
   return rotate_letters(key, :right, distance)
 end
 
+key_stack = []
 File.open('day21.data').each do |line|
   next if(line.nil?)
+
+  key_stack.push("#{key} - #{line}")
 
   spi = /swap position (\d+) with position (\d+)/.match(line) 
   if(!spi.nil?)
@@ -98,7 +101,11 @@ File.open('day21.data').each do |line|
   mpi = /move position (\d+) to position (\d+)/.match(line)
   if(!mpi.nil?)
     key = move_positions(key, mpi[1].to_i, mpi[2].to_i)
-  end
+  end  
+end
+
+while(!key_stack.empty?) do
+  puts key_stack.pop()
 end
 
 puts "Part 1 - #{key}"

@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # Day 1 2016
 # See http://adventofcode.com/2016/day/21
-
-puts "Advent of Code 2016 day 21"
-
 key = "dgfaehcb" #"fbgdceah"
+puts "Advent of Code 2016 day 21 - #{key}"
+
+
 
 def swap_positions(key, p1, p2)
   t = key[p1]
@@ -25,7 +25,7 @@ def swap_letters(key, l1, l2)
   return key
 end
 
-def move_positions(key, p1, p2)
+def move_positions(key, p2, p1)
   s = key.dup
   c = s.slice!(p1)
 
@@ -65,7 +65,7 @@ def rotate_by_index_of_char(key, c)
   distance += 1 if(distance >= 4)
   distance += 1
 
-  return rotate_letters(key, :left, distance)
+  return rotate_letters(key, :right, distance)
 end
 
 stack = []
@@ -103,10 +103,12 @@ while(!stack.empty?) do
 
   mpi = /move position (\d+) to position (\d+)/.match(line)
   if(!mpi.nil?)
-    key = move_positions(key, mpi[2].to_i, mpi[1].to_i)
+    key = move_positions(key, mpi[1].to_i, mpi[2].to_i)
   end
+
 
   puts "#{key} - #{line}"
 end
+puts "#{key}"
 
 puts "Part 2 - #{key}"
