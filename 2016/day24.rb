@@ -70,6 +70,7 @@ minimum_distance = 999999999
 fastest_route = nil
 targets.permutation.each do |route|	
 	distance = 0
+	long_route = false
 
 	cur_point = Ruby::Pathfinding::Point.new(origin[0],origin[1])
 	route.each do |p|
@@ -90,12 +91,16 @@ targets.permutation.each do |route|
 			# end
 		end
 
+		if(distance > minimum_distance)
+			long_route = true
+			break
+		end
+
 		cur_point = destination
 	end
 
-	#puts "D: #{distance} R: #{path_string(route, target_map)}"
-
-	if(distance < minimum_distance)
+	puts "D: #{distance} L: #{long_route} R: #{path_string(route, target_map)}"
+	if(long_route == false && distance < minimum_distance)
 		minimum_distance = distance
 		fastest_route = route
 	end
