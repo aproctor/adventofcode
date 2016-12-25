@@ -63,11 +63,13 @@ def path_string(route,tmap)
 	return s
 end
 
+
 ####
 # Find the shortest route through each point from each point
 ###
 minimum_distance = 999999999
 fastest_route = nil
+shortest_paths = {}
 targets.permutation.each do |route|	
 	distance = 0
 	long_route = false
@@ -75,20 +77,20 @@ targets.permutation.each do |route|
 	cur_point = Ruby::Pathfinding::Point.new(origin[0],origin[1])
 	route.each do |p|
 		destination = Ruby::Pathfinding::Point.new(p[0],p[1])
-		pf = Ruby::Pathfinding::PathFinder.new(sa,cur_point,destination)
-		path = pf.find_path
-		if(path.nil?)
-			#invalid path somehow
-			puts "unable to find path!"
-			break
-		else						
-			distance += path.length - 1
-			# if(path_string(route, target_map) == "4123")
-			# 	puts "- #{distance}"
-			# 	path.each do |z|
-			# 		puts "#{z.x},#{z.y}"
-			# 	end
-			# end
+		key = ["#{cur_point.x},#{cur_point.y}","#{destination.x},#{destination.y}"].sort.join('-')
+		if(shortest_paths.key?(key))
+			distance += shortest_paths[key]
+		else		
+			pf = Ruby::Pathfinding::PathFinder.new(sa,cur_point,destination)
+			path = pf.find_path
+			if(path.nil?)
+				#invalid path somehow
+				puts "unable to find path!"
+				break
+			else
+				distance += path.length - 1
+				shortest_paths[key] = path.length - 1
+			end
 		end
 
 		if(distance > minimum_distance)
