@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 # Day 1 2016
 # See http://adventofcode.com/2016/day/21
-key = "dgfaehcb" #"fbgdceah"
+key = "fbgdceah"
 puts "Advent of Code 2016 day 21 - #{key}"
 
-
+#This was brute forced by running each possible index and finding they had unique results
+DEROTATE_OFFSETS = [1,3,5,7,2,4,6,0]
 
 def swap_positions(key, p1, p2)
   t = key[p1]
@@ -61,11 +62,11 @@ def rotate_letters(key, direction, steps)
 end
 
 def rotate_by_index_of_char(key, c)
-  distance = key.index(c)
-  distance += 1 if(distance >= 4)
-  distance += 1
-
-  return rotate_letters(key, :right, distance)
+  current_index = key.index(c)
+  steps = current_index - DEROTATE_OFFSETS.index(current_index)
+  direction = (steps > 0) ? :right : :left
+  
+  return rotate_letters(key, direction, steps.abs)
 end
 
 stack = []
@@ -107,8 +108,9 @@ while(!stack.empty?) do
   end
 
 
-  puts "#{key} - #{line}"
+  #puts "#{key} - #{line}"
 end
-puts "#{key}"
+#puts "#{key}"
 
 puts "Part 2 - #{key}"
+

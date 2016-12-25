@@ -109,3 +109,15 @@ while(!key_stack.empty?) do
 end
 
 puts "Part 1 - #{key}"
+
+resulting_offsets = []
+temp = "abcdefgh"
+temp.length.times do |i|
+  result = rotate_by_index_of_char(temp,temp[i])
+  resulting_offsets[i] = result.index(temp[i])
+  puts "#{temp[i]} #{result} #{resulting_offsets[i]}"
+end
+puts resulting_offsets.inspect
+puts [1,3,5,7,2,4,6,0].inspect
+
+
