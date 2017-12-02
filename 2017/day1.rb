@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Day 1 2016
+# Day 1 2017
 # See http://adventofcode.com/2017/day/1
 
 puts "Advent of Code 2017 day 1"
