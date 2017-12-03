@@ -51,12 +51,83 @@ def part1(num)
 
 	distance = x.abs + y.abs
 
-	puts "#{num}: #{distance}"
+	puts "Part 1 - #{num}: #{distance}"
 
 	distance
 end
 
-part1(12)
-part1(23)
-part1(1024)
+# Squares are valued in sequence, including all neighboring cells
+# 147  142  133  122   59
+# 304    5    4    2   57
+# 330   10    1    1   54
+# 351   11   23   25   26
+# 362  747  806--->   ...
+
+#Find the first value larger than num in this grid
+def part2(num)
+	return 1 if(num < 1)
+	
+	
+	# walk around in a similar fashion to part 1, starting at (0,0)
+	x = 0
+	y = 0
+	bounds = 1
+	direction = :right
+	known_values = {}
+	known_values["0,0"] = 1
+	last_value = 1
+
+	#num is actually more of an arbirtrary limit on this loop, but the numbers grow so rapidly, it's for sure less than num spots away
+	num.times do |i|
+
+		# Move Pointer
+		if(direction == :right)
+			x += 1
+			direction = :up if x == bounds
+		elsif(direction == :up)
+			y -= 1
+			direction = :left if y == -bounds
+		elsif(direction == :left)
+			x -= 1
+			direction = :down if x == -bounds
+		else #down
+			y += 1
+			if y == bounds
+				direction = :right
+				bounds += 1
+			end
+		end
+
+		# Evaluate known values of partners
+		value = 0
+		neighbours = [[x+1,y],[x+1,y-1],[x,y-1],[x-1,y-1],[x-1,y],[x-1,y+1],[x,y+1],[x+1,y+1]]
+		neighbours.each do |pair|			
+			key = pair.join(',')
+			value += known_values[key].to_i # missing keys will return 0
+		end
+		#puts "#{i}: (#{x},#{y}) - #{value}"
+
+		known_values["#{x},#{y}"] = value
+		last_value = value
+
+
+		break if(value > num)
+	end
+		
+	puts "Part 2 - #{num}: #{last_value}"
+
+	last_value
+end
+
+
+
+
+# part1(12)
+# part1(23)
+# part1(1024)
 part1(277678)
+
+
+# part2(30)
+# part2(747)
+part2(277678)
