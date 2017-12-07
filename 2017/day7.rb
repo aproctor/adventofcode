@@ -20,6 +20,68 @@ class TreeNode
 		@children << node
 		node.parent = self
 	end
+	
+	def total_weight()
+		return @memoized_weight if(!@memoized_weight.nil?)
+		child_weight = 0
+		@children.each do |child|
+			child_weight += child.weight		
+		end
+
+		#@memoized_weight = 
+		@weight + child_weight
+	end
+
+	def balanced?
+		@children.each_with_index do |c,i|
+			return false if(i > 0 && c.total_weight != @children[0].total_weight)
+		end
+
+		true
+	end
+
+	def rebalance
+		return if balanced?  #inefficient, but safe to check
+
+		#major assumption is that only one node in the entire tree is wrong
+		#but one wrong weight makes the rest of the nodes below unbalanced as well
+		#so if a child is unbalanced as well, the problem is not on this node
+
+		#find child with outlier weight, adjust it's weight to compensate for it's children
+		weight_map = {}
+		mode = nil
+		@children.each_with_index do |c, i|
+
+			if !c.balanced?
+				#problem isn't on this node, go to the child and balance it
+				puts "passing the buck from #{self.name} to #{c.name}"
+				c.rebalance				
+				return
+			end
+
+			w = c.total_weight
+			#puts "#{i}: #{w}"
+			if(weight_map[w].nil?)				
+				weight_map[c.total_weight] = i
+			else
+				#we've seen this weight before, and know that only one weight is wrong
+				mode = w
+			end
+		end
+
+		weight_map.each do |w,i|
+			if(w != mode && !mode.nil?)
+				puts "Found outlier at #{i}.  #{@children[i].name} (#{w}) needs to be #{mode}"
+				delta = mode - w
+
+				@children[i].weight += delta
+				
+				puts "Part 2 - Delta is #{delta}"
+				break
+			end
+		end
+
+	end
 end
 
 node_map = {}
@@ -44,5 +106,9 @@ end
 node_map.each do |name, node|
 	if(node.parent.nil?)
 		puts "Part 1 - Root node is #{name}"
+	end
+	if(!node.balanced?)
+		#puts "#{name} is not balanced"
+		node.rebalance
 	end
 end
