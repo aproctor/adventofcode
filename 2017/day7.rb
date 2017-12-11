@@ -21,20 +21,24 @@ class TreeNode
 		node.parent = self
 	end
 	
-	def total_weight()
-		return @memoized_weight if(!@memoized_weight.nil?)
+	def total_weight(verbose = false)
+		return @memoized_weight if(!@memoized_weight.nil? && !verbose)		
+		puts "++#{self.name} (#{weight})" if verbose
 		child_weight = 0
 		@children.each do |child|
-			child_weight += child.weight		
+			child_weight += child.total_weight(false)		
+			puts "#{child.name} (#{child.weight}) -> (#{child.total_weight})" if verbose
 		end
 
-		#@memoized_weight = 
-		@weight + child_weight
+		@memoized_weight = @weight + child_weight
 	end
 
 	def balanced?
-		@children.each_with_index do |c,i|
-			return false if(i > 0 && c.total_weight != @children[0].total_weight)
+		if(@children.length > 0)
+			first_w = @children[0].total_weight
+			@children.each_with_index do |c,i|
+				return false if(i > 0 && c.total_weight != first_w)
+			end
 		end
 
 		true
@@ -55,7 +59,7 @@ class TreeNode
 			if !c.balanced?
 				#problem isn't on this node, go to the child and balance it
 				puts "passing the buck from #{self.name} to #{c.name}"
-				c.rebalance				
+				c.rebalance
 				return
 			end
 
@@ -69,9 +73,17 @@ class TreeNode
 			end
 		end
 
+		puts "Children not balanced: "
+		@children.each do |c2|
+			puts "#{c2.name}: #{c2.total_weight}"
+		end
+
 		weight_map.each do |w,i|
 			if(w != mode && !mode.nil?)
 				puts "Found outlier at #{i}.  #{@children[i].name} (#{w}) needs to be #{mode}"
+
+				puts "#{@children[i].total_weight(true)}"
+
 				delta = mode - w
 
 				@children[i].weight += delta
@@ -108,7 +120,8 @@ node_map.each do |name, node|
 		puts "Part 1 - Root node is #{name}"
 	end
 	if(!node.balanced?)
-		#puts "#{name} is not balanced"
+		puts "#{name} is not balanced"
 		node.rebalance
+		break
 	end
 end
