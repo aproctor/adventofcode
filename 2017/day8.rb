@@ -33,19 +33,19 @@ class Instruction
 	end
 
 	def run(registers)
-		
-		if(valid?(registers))
+		value = registers[@address].to_i
 
+		if(valid?(registers))
 			if(@operation == :inc)
-				delta = amount
+				value += amount
 			elsif @operation == :dec
-				delta = amount * -1
-			else
-				puts "UKNOWN OPERATION <#{self.inspect}>"
+				value += -amount
 			end
 
-			registers[@address] = registers[@address].to_i + delta
+			registers[@address] = value
 		end
+
+		value
 	end
 end
 
@@ -64,8 +64,11 @@ end
 
 #Part 1
 registers = {}
+max_value = 0
 instructions.each do |ins|
-	ins.run(registers)
+	val = ins.run(registers)
+	max_value = val if(val > max_value)
 end
 
 puts "Part 1 - Max value #{registers.values.max}"
+puts "Part 2 - Max ever value #{max_value}"
