@@ -6,6 +6,9 @@ def distance(directions)
 	x = 0
 	y = 0
 
+	dist = 0
+	max_dist = 0
+
 	directions.split(',').each do |d|
 		if d == "n"
 			y += -1		
@@ -24,14 +27,17 @@ def distance(directions)
 		else
 			puts "Uknown direction #{d}"
 		end	
+
+		dist = (x.abs + (x + y).abs + y.abs)/ 2		
+		max_dist = dist if(dist > max_dist)
 	end
 
-	puts "final position (#{x},#{y})"
+	puts "final position (#{x},#{y}), max: #{max_dist}"
 
 	#Since we're doing a distance to 0,0 the axial co-ordinate distance formual is reduced	
-    d = (x.abs + (x + y).abs + y.abs)/ 2
+    
 
-	d
+	dist
 end
 
 # puts "#{distance("ne,ne,ne")}"
