@@ -26,7 +26,7 @@ class TreeNode
 		puts "++#{self.name} (#{weight})" if verbose
 		child_weight = 0
 		@children.each do |child|
-			child_weight += child.total_weight(false)		
+			child_weight += child.total_weight(verbose)		
 			puts "#{child.name} (#{child.weight}) -> (#{child.total_weight})" if verbose
 		end
 
@@ -45,8 +45,6 @@ class TreeNode
 	end
 
 	def rebalance
-		return if balanced?  #inefficient, but safe to check
-
 		#major assumption is that only one node in the entire tree is wrong
 		#but one wrong weight makes the rest of the nodes below unbalanced as well
 		#so if a child is unbalanced as well, the problem is not on this node
@@ -75,24 +73,36 @@ class TreeNode
 
 		puts "Children not balanced: "
 		@children.each do |c2|
-			puts "#{c2.name}: #{c2.total_weight}"
+			puts "#{c2.name}: #{c2.total_weight} - #{c2.balanced?}"
 		end
 
 		weight_map.each do |w,i|
 			if(w != mode && !mode.nil?)
 				puts "Found outlier at #{i}.  #{@children[i].name} (#{w}) needs to be #{mode}"
 
-				puts "#{@children[i].total_weight(true)}"
+				#puts "#{@children[i].total_weight(true)}"
 
 				delta = mode - w
 
-				@children[i].weight += delta
+				#@children[i].weight += delta
 				
-				puts "Part 2 - Delta is #{delta}"
+				puts "Part 2 - Delta is #{delta}, final weight: #{@children[i].weight + delta}"
 				break
 			end
 		end
 
+	end
+
+	def print_tree(depth)
+		prefix = ""
+		depth.times do 
+			prefix = "#{prefix}\t"
+		end
+
+		puts "#{prefix}#{@name} (#{@weight}) [#{total_weight}] #{balanced?}"
+		@children.each do |c|
+			c.print_tree(depth+1)
+		end
 	end
 end
 
@@ -115,13 +125,16 @@ node_map.each do |name,node|
 	end
 end
 
+root = nil
 node_map.each do |name, node|
 	if(node.parent.nil?)
 		puts "Part 1 - Root node is #{name}"
+		root = node
 	end
 	if(!node.balanced?)
 		puts "#{name} is not balanced"
-		node.rebalance
-		break
+		node.rebalance		
 	end
 end
+
+#root.print_tree(0)
