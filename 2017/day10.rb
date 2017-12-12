@@ -17,7 +17,7 @@ def p1_twist_hash(inputs, size)
 	
 
 	#a sequence of lengths (your puzzle input). Then, for each length:
-	inputs.split(', ').each do |length|
+	inputs.split(',').each do |length|
 		#puts "current_position: #{current_position} length: #{length}"
 		# Reverse the order of that length of elements in the list, starting with the element at the current position.
 		stack = []
@@ -43,5 +43,5 @@ def p1_twist_hash(inputs, size)
 	numbers[0] * numbers[1]
 end
 
-#puts p1_twist_hash("3, 4, 1, 5",5)
+#puts p1_twist_hash("3,4,1,5",5)
 puts p1_twist_hash("129,154,49,198,200,133,97,254,41,6,2,1,255,0,191,108",256)
