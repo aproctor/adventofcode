@@ -44,6 +44,22 @@ class Program
 
 		return nil
 	end
+
+	def determine_group
+		if @group.nil?
+			apply_group(@pid)
+		end
+	end
+
+	def apply_group(val)
+		#even if you have a group, overwrite it with whatever value you're fed
+		if @group != val
+			@group = val
+			@pipes.each do |k,v|			
+				v.apply_group(val)
+			end
+		end
+	end
 end
 
 
@@ -72,24 +88,15 @@ end
 puts "Part 1 - total connected #{connected}"
 
 #Part 2 find distinct groups
-group_roots = {}
-cur_group = 0
-group_roots[cur_group] = program_map.keys.first
 
 program_map.each do |key, program|
-	group_roots.each do |k,v|
-		if(!program.path_to(v,[]).nil?)
-			program.group = k
-			break
-		end
-	end
-	if(program.group.nil?)
-		puts "No group found for #{key}, #{cur_group}"
-		#no existing group found, let's define a new one
-		cur_group += 1
-		program.group = cur_group
-		group_roots[cur_group] = program
-	end
+	program.determine_group
+end
+group_sizes = {}
+program_map.each do |key, program|
+	group_sizes[program.group] = group_sizes[program.group].to_i + 1
 end
 
-puts "Part 2 - #{group_roots.count} groups found"
+#puts group_sizes.inspect
+
+puts "Part 2 - #{group_sizes.count} groups found"
