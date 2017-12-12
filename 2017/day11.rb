@@ -28,15 +28,14 @@ def distance(directions)
 			puts "Uknown direction #{d}"
 		end	
 
+		#Since we're doing a distance to 0,0 the axial co-ordinate distance formual is reduced	
 		dist = (x.abs + (x + y).abs + y.abs)/ 2		
 		max_dist = dist if(dist > max_dist)
 	end
 
 	puts "final position (#{x},#{y}), max: #{max_dist}"
 
-	#Since we're doing a distance to 0,0 the axial co-ordinate distance formual is reduced	
-    
-
+	
 	dist
 end
 
