@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "set"
+
 #########
 # Day 10's Knot hash solution
 #####
@@ -105,3 +107,82 @@ end
 puts part1("flqrgnkx")
 puts "\n"
 puts part1("stpzcrnm")
+
+
+def part2(input)
+	puts "part2 - #{input}"
+	checksum = 0
+
+	occupied_spots = {}
+
+	next_region = 1
+	merges = 0
+
+	128.times do |y|
+		key = "#{input}-#{y}"
+		hash = knot_hash(key,256, 64, [17, 31, 73, 47, 23])
+		bits = bytes_to_bits(hash)
+
+		bits.each_char.with_index do |c,x|
+			if(c == "1")
+				coord = "#{x},#{y}"
+
+				left = occupied_spots["#{x-1},#{y}"]
+				up = occupied_spots["#{x},#{y-1}"]
+				region = nil
+
+				if left
+					if up
+						#merge regions
+						min = [left,up].min
+						max = [left,up].max
+						occupied_spots.each do |k,v|
+							if occupied_spots[k] == max
+								occupied_spots[k] = min
+							end
+						end
+						region = min
+						merges += 1
+					else
+						region = left
+					end
+				elsif up
+					region = up
+				else
+					#no occupied adjacent region, define new region
+					region = next_region
+					next_region += 1
+				end
+
+				occupied_spots[coord] = region
+			end
+		end
+	end
+
+	#preview
+	6.times do |y|
+		line = []
+		8.times do |x|
+			region = occupied_spots["#{x},#{y}"]
+			if region
+				line << (region+48).chr
+			else
+				line << "."
+			end
+		end
+		puts line.join('')
+	end
+
+	distinct = Set.new
+	occupied_spots.each do |k,v|
+		distinct << v
+	end
+
+	return distinct.size
+end
+
+puts "\n"
+puts part2("flqrgnkx")
+puts "\n"
+puts part2("stpzcrnm")
+
