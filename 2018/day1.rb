@@ -1,12 +1,7 @@
 #!/usr/bin/env ruby
 # Day 1 2018
 # See http://adventofcode.com/2018/day/1
-
-require "set"
-
 puts "Advent of Code 2018 day 1"
-
-
 puts "Part 1"
 p1_value = 0
 instructions = []
@@ -14,7 +9,6 @@ File.open('day1.data').each do |line|
     continue if(line.nil?)
     instructions << line.to_i
 end
-
 
 visited = {}
 first_repeat = nil
