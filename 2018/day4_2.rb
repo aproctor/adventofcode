@@ -3,7 +3,7 @@
 
 MAX_ITERATIONS = 100000 #NASA required saftey on while loops
 
-puts "Part 1 - sleepiest guard"
+puts "Part 2 - sleepiest minute"
 
 active_guard = nil
 sleep_hour = 0
@@ -35,13 +35,9 @@ File.open('day4.data').each do |line|
 				if sleep_schedule.nil?
 					sleep_schedule = {
 						id: active_guard,
-						total_slept: 0,
 						sleeps: []
 					}
 				end
-
-	      slept_mins = (hour - sleep_hour) * 60 + (minute - sleep_minute)
-	      sleep_schedule[:total_slept] = sleep_schedule[:total_slept] + slept_mins
 
 	      sleep_schedule[:sleeps] << {start_hour: sleep_hour, start_min: sleep_minute, end_hour: hour, end_min: minute}
 
@@ -58,37 +54,36 @@ File.open('day4.data').each do |line|
 	end
 end
 
-sleepiest_guard = nil
+sleepiest_info = nil
+max_freq = 0
 guard_sleep_schedule.each do |k, guard|
-	puts "Guard ##{k} slept #{guard[:total_slept]} minutes"
-	if sleepiest_guard.nil? || guard[:total_slept] > sleepiest_guard[:total_slept]
-		sleepiest_guard = guard
-	end
-end
-puts "Guard ##{sleepiest_guard[:id]} is the sleepiest"
+	minutes = Array.new(60,0) #start each minute with 0 minutes slept
 
-minutes = Array.new(60,0) #start each minute with 0 minutes slept
-sleepiest_guard[:sleeps].each do |sleep|
-	#you could ignore whole hours of overlap but let's keep the algorithm simple until part 2 is revealed
-	cur_minute = sleep[:start_min]
-	cur_hour = sleep[:start_hour]
-	MAX_ITERATIONS.times do
-		minutes[cur_minute] = minutes[cur_minute] + 1
-		cur_minute += 1
-		if(cur_minute == 60)
-			cur_hour += 1
-			cur_minute = 0
+	guard[:sleeps].each do |sleep|
+		#you could ignore whole hours of overlap but let's keep the algorithm simple until part 2 is revealed
+		cur_minute = sleep[:start_min]
+		cur_hour = sleep[:start_hour]
+		MAX_ITERATIONS.times do
+			minutes[cur_minute] = minutes[cur_minute] + 1
+			cur_minute += 1
+			if(cur_minute == 60)
+				cur_hour += 1
+				cur_minute = 0
+			end
+			break if cur_minute == sleep[:end_min] && cur_hour == sleep[:end_hour]
 		end
-		break if cur_minute == sleep[:end_min] && cur_hour == sleep[:end_hour]
+	end
+
+	new_record_index = nil
+	minutes.each_with_index do |val, i|
+		if(val > max_freq)
+			new_record_index = i
+			max_freq = val
+		end
+	end
+	if(new_record_index)
+		sleepiest_info = {id: guard[:id], minute: new_record_index, freq: max_freq}
 	end
 end
-max_value = minutes[0]
-max_index = 0
-minutes.each_with_index do |val, i|
-	if(val > max_value)
-		max_index = i
-		max_value = val
-	end
-end
-puts "minute #{max_index} is the most likely time he's asleep"
-puts "Part 1 value: #{max_index * sleepiest_guard[:id]}"
+puts "sleepiest info: #{sleepiest_info.inspect}"
+puts "Part 2 value: #{sleepiest_info[:id] * sleepiest_info[:minute]}"
