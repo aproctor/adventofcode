@@ -11,39 +11,49 @@ end
 
 # input = "dabAcCaCBAcCcaDA"
 
-def reduce(value, depth)
-  if depth > MAX_ITERATIONS
-    puts "We dug to deep! panic!"
-    return
-  end
+def reacting_chars(c1,c2)
+  return !c2.nil? && c1.downcase == c2.downcase && c1 != c2
+end
 
-  # puts "#{depth}: #{value}"
-  puts depth if depth % 1000 == 0
+def reduce(value)
 
-  reaction = false
-  prev_char = nil
-  value.each_char.with_index do |c,i|
-    if(c.downcase == prev_char && c != prev_char)
-      reaction = true
-      #splice out these chars
-      buffer = []
-      buffer << value[0..i-2] if(i > 2)
-      buffer << value[i+1..-1] if(i < value.length - 1)
-      value = buffer.join('')
+  MAX_ITERATIONS.times do |depth|
+    puts depth if depth % 1000 == 0
 
-      break
-    else
+    # puts "v: #{value}"
+
+    reaction = false
+    prev_char = nil
+
+    if depth > MAX_ITERATIONS
+      puts "We dug to deep! panic!"
+      return nil
+    end
+
+    buffer = []
+    value.each_char.with_index do |c,i|
+      if reacting_chars(c, prev_char)
+        reaction = true
+        #splice out these chars
+        buffer << value[0..i-2] if(i > 2)
+        buffer << value[i+1..-1] if(i < value.length - 1)
+        break
+      end
       prev_char = c
+    end
+    if reaction
+      # start again
+      value = buffer.join('')
+    else
+      puts "#{value}"
+      puts "min value found: #{value.length}"
+
+      return value
     end
   end
 
-  if(reaction)
-    reduce(value, depth+1)
-  else
-    puts "min value found: #{value.length}"
-  end
-
-  value
+  puts "Nothing found after #{depth} iterations"
+  return nil
 end
 
-reduce(input, 0)
+reduce(input)
