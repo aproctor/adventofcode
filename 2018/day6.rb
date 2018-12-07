@@ -23,20 +23,22 @@ File.open('day6.data').each do |line|
 end
 
 
-grid = {}
+safe_point_count = 0
 (min_x..max_x).each do |x|
 	(min_y..max_y).each do |y|
 		min_dist = 999999
 		min_point = nil
+		total_dist = 0
 		points.each do |p|
 			dist = (p[:x] - x).abs + (p[:y] - y).abs
+			total_dist += dist
 			if(dist < min_dist)
 				min_dist = dist
 				min_point = p
 			elsif(dist == min_dist)
 				#same distance, for now ignore both points maybe a smaller point will show up
 				min_point = nil
-			end
+			end			
 		end
 		if(!min_point.nil?)
 			min_point[:total] += 1
@@ -44,6 +46,8 @@ grid = {}
 			#any point touching the bounds should be considered invalid for the result
 			min_point[:valid] = false if(x == min_x || x == max_x || y == min_y || y == max_y)
 		end
+
+		safe_point_count += 1 if(total_dist < 10000)
 	end
 end
 
@@ -53,4 +57,4 @@ points.each do |p|
 	max_val = p[:total] if p[:valid] && p[:total] > max_val
 end
 puts "Part 1 - #{max_val}"
-
+puts "Part 2 - #{safe_point_count}"
