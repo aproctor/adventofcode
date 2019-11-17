@@ -2,9 +2,9 @@
 # See http://adventofcode.com/2018/day/7
 
 ALL_NODES = {}
-MAX_ITERATIONS = 20
-BUSY_DURATION_BASE = 1
-NUM_WORKERS = 2
+MAX_ITERATIONS = 20000
+BUSY_DURATION_BASE = 61
+NUM_WORKERS = 5
 COMPLETED_NODES = []
 
 class Node
@@ -63,6 +63,19 @@ class Worker
 		return @node.nil? ? "." : @node.ref
 	end
 
+	def search
+		if !busy? && !ALL_NODES.empty?
+			#find new node
+			ALL_NODES.each do |r,n|
+				if n.free?
+					#puts "Node free: #{n}"
+					self.process(n)
+					break
+				end
+			end
+		end
+	end
+
 	def tick
 		if self.busy?			
 			@remaining_steps -= 1			
@@ -72,17 +85,6 @@ class Worker
 				@node.destroy
 				@node = nil
 			end			
-		elsif !ALL_NODES.empty?
-			#find new node
-			ALL_NODES.each do |r,n|
-				if n.free?
-					#puts "Node free: #{n}"
-					self.process(n)
-					break
-				end
-			end
-
-			#puts "Unable to find free node" if !busy?
 		end
 	end
 end
@@ -124,9 +126,13 @@ MAX_ITERATIONS.times do |i|
 	
 	debug = []
 	debug << i
-	workers.each do |w|
-		w.tick
+	#puts "Tick"
+	workers.each do |w|		
+		w.search
 		debug << w.status
+	end
+	workers.each do |w|	
+		w.tick		
 	end
 	debug << COMPLETED_NODES.join("")
 	puts "#{debug.join("\t")}"
