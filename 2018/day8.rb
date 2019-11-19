@@ -6,33 +6,41 @@ class TreeNode
   @@all_nodes = []
   @@cur_index = 0
 
+  @@checksum = 0
+
   attr_accessor :nodes, :meta_data
 
-  def initialize(start_index)
+  def initialize()
     @nodes = []
     @meta_data = []
-    @start = start_index
-    @node_count = @@data[start_index]
-    @meta_data_count = @@data[start_index+1]
+    @start = @@cur_index+=1
+    node_count = @@data[@start]
+    meta_data_count = @@data[@@cur_index+=1]
+    #puts "nc: #{node_count}, mdc: #{meta_data_count}"
 
     @@all_nodes << self
 
-    #TODO Build children
-    # cur_index = start + 2
-    # for each node, recurse
-    # for each meta data, append
-
-    # @end = cur_index -1
+    #Build children
+    node_count.times do
+      @nodes << TreeNode.new
+    end
+    meta_data_count.times do
+      md = @@data[@@cur_index+=1]
+      @meta_data << md
+      @@checksum += md
+    end
+    @end = @@cur_index -1
   end
 
   def to_s
-    " #{@start},#{@node_count},#{@meta_data_count}"
+    " #{@start}-#{@end},#{@nodes.count},#{@meta_data.count}"
   end
 
   def self.build(d)
     @@data = d
-    @@cur_index = 0
-    root = TreeNode.new(0)
+    @@cur_index = -1
+    @@checksum = 0
+    root = TreeNode.new
   end
   def self.print_tree
     puts @@data.inspect
@@ -40,6 +48,7 @@ class TreeNode
       a = ("A".ord + i).chr
       puts "#{a}: #{n}"
     end
+    puts "Checksum: #{@@checksum}"
   end
 end
 
