@@ -5,6 +5,7 @@ class TreeNode
   @@data = nil
   @@all_nodes = []
   @@cur_index = 0
+  @@root = nil
 
   @@checksum = 0
 
@@ -40,16 +41,36 @@ class TreeNode
     @@data = d
     @@cur_index = -1
     @@checksum = 0
-    root = TreeNode.new
+    @@root = TreeNode.new
+
+    return @@root
   end
+
+  def p2_value
+    if @nodes.count == 0
+      #If no children, then sum of metadata
+      return @meta_data.inject(0){|sum,x| sum + x }
+    end
+
+    #Otherwise, value is sum of child[x-1] p2_value
+    #Where x = value of each meta data
+    child_sum = 0
+    @meta_data.each do |md|
+      idx = md-1
+      child_sum += @nodes[md-1].p2_value if idx >= 0 && idx < @nodes.count
+    end
+    return child_sum
+  end
+
   def self.print_tree
-    puts @@data.inspect
+    #puts @@data.inspect
     @@all_nodes.each_with_index do |n, i|
       #note this causes an error with too many nodes, need some sort of modulo
       #a = ("A".ord + i).chr
       #puts "#{a}: #{n}"
     end
     puts "Checksum: #{@@checksum}"
+    puts "P2 Value: #{@@root.p2_value}"
   end
 end
 
@@ -59,9 +80,7 @@ File.open('day8.data').each do |line|
   next if(line.nil?)
   input += line.split(" ").map { |str| str.to_i}
 end
-TreeNode.build(input)
-
-
+root = TreeNode.build(input)
 TreeNode.print_tree
 
 
