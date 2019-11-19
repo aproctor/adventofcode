@@ -45,8 +45,9 @@ class TreeNode
   def self.print_tree
     puts @@data.inspect
     @@all_nodes.each_with_index do |n, i|
-      a = ("A".ord + i).chr
-      puts "#{a}: #{n}"
+      #note this causes an error with too many nodes, need some sort of modulo
+      #a = ("A".ord + i).chr
+      #puts "#{a}: #{n}"
     end
     puts "Checksum: #{@@checksum}"
   end
