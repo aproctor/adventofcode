@@ -127,7 +127,8 @@ inputs = [
 	"17 players; last marble is worth 1104 points",
 	"21 players; last marble is worth 6111 points",
 	"30 players; last marble is worth 5807 points",
-	"424 players; last marble is worth 71482 points"
+	"424 players; last marble is worth 71482 points",
+	"424 players; last marble is worth 7148200 points"
 ]
 
 inputs.each do |input|
