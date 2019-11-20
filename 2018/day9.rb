@@ -46,6 +46,7 @@ class MarbleCircle
 				@cur_marble = m
 				m.next = m
 				m.prev = m
+				@root = m
 			else
 				@marbles << m
 			end
@@ -59,7 +60,10 @@ class MarbleCircle
 
 	def print_high_score
 		player = 0
-		while @marbles.count > 0 do 
+
+		i = 0
+
+		while @marbles.count > 0 do
 			m = @marbles.shift
 
 			# if the marble that is about to be placed has a number which is a multiple of 23
@@ -75,7 +79,7 @@ class MarbleCircle
 				@player_scores[player] += m2.val
 
 				#The marble located immediately clockwise of the marble that was removed becomes the new current marble.
-				@cur_marble = m2.prev	
+				@cur_marble = m2.next	
 				m2.remove				
 			else
 				#insert new marble				
@@ -84,14 +88,35 @@ class MarbleCircle
 				@cur_marble = m	
 			end			
 
+			#puts "[#{player+1}]  #{debug_marble_str(i+2)}"
+
 			#next player
 			player = (player + 1) % @player_count
+			i += 1
 		end
 
 		#puts "#{@player_scores.inspect}"
 		high_score = @player_scores.max
 		
 		puts "#{@player_count} players; last marble is worth #{@marble_count} points: high score is #{high_score}"
+	end
+
+	def debug_marble_str(length)
+		output = []
+		m = @root
+		length.times do
+			#puts "ok"
+			if m.val == @cur_marble.val
+				output << "(#{m.val})"
+			else
+				output << m.val.to_s
+			end
+
+			m = m.next
+			#break if m.val != @root.val
+		end
+		
+		output.join("  ")
 	end
 end
 
@@ -101,7 +126,8 @@ inputs = [
 	"13 players; last marble is worth 7999 points",
 	"17 players; last marble is worth 1104 points",
 	"21 players; last marble is worth 6111 points",
-	"30 players; last marble is worth 5807 points"
+	"30 players; last marble is worth 5807 points",
+	"424 players; last marble is worth 71482 points"
 ]
 
 inputs.each do |input|
