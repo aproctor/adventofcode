@@ -1,14 +1,19 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2018/day/10
 
-MIN_X = -5
-MAX_X = 20
-MIN_Y = -5
-MAX_Y = 20
-STEPS = 5
+require 'chunky_png'
 
-width = MAX_X - MIN_X
-height = MAX_Y - MIN_Y
+MIN_X = -500
+MAX_X = 500
+MIN_Y = -500
+MAX_Y = 500
+SCALE_FACTOR = 1
+STEPS = 30
+JUMPS_PER_STEP = 1
+START_STEPS = 10020
+
+width = ((MAX_X - MIN_X) / SCALE_FACTOR).round
+height = ((MAX_Y - MIN_Y) / SCALE_FACTOR).round
 
 class Point  
   attr_accessor :x, :y, :v_x, :v_y
@@ -20,15 +25,25 @@ class Point
     @v_y = v_y
   end
 
-  def step
-    @x += @v_x
-    @y += @v_y
+  def step(scale = 1)
+    @x += @v_x * scale
+    @y += @v_y * scale
   end
 
   def reset
     @x = @origin_x
     @y = @origin_y
   end
+end
+
+def transform(point, width, height)
+  row = (point.y - MIN_Y) / SCALE_FACTOR
+  col = (point.x - MIN_X) / SCALE_FACTOR
+
+  if(row < 0 || col < 0 || row >= height || col >= width)
+    return [nil, nil]
+  end
+  return [row,col]
 end
 
 points = []
@@ -40,32 +55,28 @@ File.open('day10.data').each do |line|
   end
 end
 
+points.each do |p|
+  p.step(START_STEPS)
+end
+
 STEPS.times do |i|
   puts "Step #{i}:"
-  #clear buffer
-  buffer = []
-  height.times do |r|
-    buffer[r] = []
-    width.times do |c|
-      buffer[r][c] = "."
-    end
-  end
 
+  # Creating an image from scratch, save as an interlaced PNG
+  png = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::BLACK)
+  
   #mark points
+  white = ChunkyPNG::Color('white')
   points.each do |p|
-    row = p.y - MIN_Y
-    col = p.x - MIN_X
-    if(row >= 0 && col >= 0 && row < height && col < width)
-      buffer[row][col] = "#"
+    pos = transform(p, width, height)
+    row = pos[0]
+    col = pos[1]
+    if(!row.nil? && !col.nil?)
+      png[col,row] = white
     end
-    p.step
+    p.step(JUMPS_PER_STEP)
   end
-
-  #draw buffer
-  height.times do |r|
-    puts buffer[r].join("")
-  end
-
+  png.save("day10out/step#{i}.png", :interlace => true)
 end
 
 
