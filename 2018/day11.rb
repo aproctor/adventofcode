@@ -36,10 +36,10 @@ def debug_grid(serial, offset_x, offset_y, width, height)
   end
 end
 
-def area_power(x,y, serial)
+def area_power(x,y, serial, area_w, area_h)
   total_power = 0
-  3.times do |i|
-    3.times do |j|
+  area_h.times do |i|
+    area_w.times do |j|
       total_power += power_level(x+j, y+i, serial)
     end
   end
@@ -47,7 +47,7 @@ def area_power(x,y, serial)
   return total_power
 end
 
-def max_power(serial, width, height)
+def max_power(serial, width, height, area_w, area_h)
   max = -99999
   top_power = nil
 
@@ -55,21 +55,44 @@ def max_power(serial, width, height)
     height.times do |c|
       x = c+1
       y = r+1
-      power = area_power(x,y, serial)      
+      power = area_power(x,y, serial, area_w, area_h)      
       if power > max
         max = power
-        top_power = [x,y]
+        top_power = [max, x, y, area_w, area_h]
       end
     end
   end
 
-  debug_grid(serial, top_power[0]-1, top_power[1]-1, 5, 5)
-  puts "Max power #{max} at: (#{top_power[0]},#{top_power[1]})"
-
-  return max
+  return top_power
 end
 
-max_power(18, 300, 300)
-max_power(42, 300, 300)
-max_power(7672, 300, 300)
+def p1_power(serial)
+  top_power = max_power(serial, 300, 300, 3, 3)
+  #debug_grid(serial, top_power[0]-1, top_power[1]-1, 5, 5)
+  puts "Max power #{top_power[0]} at: (#{top_power[1]},#{top_power[2]}) #{top_power[3]}x#{top_power[4]}"
+end
 
+def p2_power(serial)
+  cur_max = [-99999]
+
+  (1..300).each do |w|
+    (1..300).each do |h|
+      mp = max_power(serial, 300, 300, w,h)
+
+      if mp[0] > cur_max[0]
+        cur_max = mp
+      end
+      # puts "#{w}x#{h} checked"
+    end
+  end
+
+  puts "Max power #{top_power[0]} at: (#{top_power[1]},#{top_power[2]}) #{top_power[3]}x#{top_power[4]}"
+end
+
+# puts "Part 1:"
+# p1_power(18)
+# p1_power(42)
+# p1_power(7672)
+
+puts "Part 2:"
+p2_power(18)
