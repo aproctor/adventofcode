@@ -127,7 +127,7 @@ class AreaGrid
       if mp[0] > top_power[0]
         top_power = mp
       end
-      puts "#{w}x#{h} checked"
+      puts "#{w}x#{h} checked.  cur top: #{top_power.join(',')}"
     end
 
     puts "Max power #{top_power.shift} at: (#{top_power.join(',')})"
@@ -141,5 +141,5 @@ end
 # AreaGrid.new(7672,300,300).p1_power
 
 puts "Part 2:"
-AreaGrid.new(18,300,300).p2_power
-# AreaGrid.new(7672,300,300).p2_power
+# AreaGrid.new(18,300,300).p2_power
+AreaGrid.new(7672,300,300).p2_power
