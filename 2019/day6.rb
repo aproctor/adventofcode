@@ -63,6 +63,14 @@ class Node
 
   	total
   end
+
+  def path_to_com
+  	return [@val] if(parent == nil)
+  	p = parent.path_to_com
+  	p << @val
+
+  	return p
+  end
 end
 
 root = nil
@@ -93,6 +101,26 @@ end
 # puts Node.find_or_create("COM").orbit_count
 # puts root.sub_orbit_counts
 puts "Part 1: #{Node.total_orbits}"
+
+puts "Part 2"
+you_path = Node.find_or_create("YOU").path_to_com
+santa_path = Node.find_or_create("SAN").path_to_com
+puts you_path.inspect
+puts santa_path.inspect
+prev = nil
+same_nodes = 0
+[you_path.length, santa_path.length].min.times do |i|
+	if you_path[i] != santa_path[i]
+		break
+	end	
+	prev = you_path[i]
+	same_nodes += 1
+end
+puts "\tSame Nodes #{same_nodes}"
+puts "\tyou_path length = #{you_path.length}"
+puts "\tsanta_path length = #{santa_path.length}"
+jumps = (you_path.length - 1 - same_nodes) + (santa_path.length - 1 - same_nodes)
+puts "\tjumps between #{jumps}"
 
 
 puts "done"
