@@ -1,11 +1,21 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2018/day/12
 
-File.open('day12.data').each do |line|
+File.open('day12.data').each_with_index do |line, l|
   next if(line.nil?)
-  md = line.match(/day ([0-9]+)/)
-  if(!md.nil?)
-    puts md[1]
+
+  if(l == 0)
+  	md = line.match(/initial state: ([#.]+)/)
+  	if(!md.nil?)
+      md[1].strip.each_char.each_with_index do |c, i|
+	  	puts "#{i}: #{c}"
+	  end
+  	end
+  else
+  	md = line.match(/(..#.#) => (#)/)
+  	next if md.nil?
+
+  	
   end
 end
 
