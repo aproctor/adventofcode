@@ -115,6 +115,24 @@ class Asteroid
 	  	end
 	  end
   end
+
+  def self.find(k)
+  	@@all_asteroids[k]
+  end
+
+  def self.find_best
+  	maxNeighbours = 0
+  	bestKey = nil
+
+  	@@all_asteroids.each do |k,v|
+  		if(v.neighbours.count > maxNeighbours)
+  			bestKey = k
+  			maxNeighbours = v.neighbours.count
+  		end
+  	end
+
+  	@@all_asteroids[bestKey]
+  end
 end
 
 
@@ -133,4 +151,9 @@ end
 puts "Part 1"
 Asteroid::build_connections
 Asteroid::print_asteroids(:verbose)
-Asteroid::print_asteroids(:compact)
+#Asteroid::print_asteroids(:compact)
+best = Asteroid::find_best
+puts "#{best.key} is the best asteroid with #{best.neighbours.count} neighbours"
+
+example = Asteroid.find("11,13")
+puts "11,13 #{example.neighbours.count}"
