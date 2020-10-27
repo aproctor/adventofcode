@@ -52,7 +52,8 @@ class Asteroid
   			online = (a.x == @x)
   		else
   			#puts "#{a.y.to_f} == #{(m.to_f*x.to_f + c.to_f)}"
-  			online = (a.y.to_f == (m*a.x + c))
+  			lineY = (m*a.x + c)
+  			online = (a.y - lineY).abs < 0.0001  					
   		end
 
   		if(online)
@@ -150,10 +151,7 @@ end
 
 puts "Part 1"
 Asteroid::build_connections
-Asteroid::print_asteroids(:verbose)
+#Asteroid::print_asteroids(:verbose)
 #Asteroid::print_asteroids(:compact)
 best = Asteroid::find_best
 puts "#{best.key} is the best asteroid with #{best.neighbours.count} neighbours"
-
-example = Asteroid.find("11,13")
-puts "11,13 #{example.neighbours.count}"
