@@ -1,8 +1,47 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2019/day/10
 
+class Line
+	attr_accessor :a1, :a2
+
+	def initialize(a1, a2)
+		@a1 = a1
+		@a2 = a2
+		@angle = nil
+	end
+
+	def dx
+		(@a2.x - @a1.x)
+	end
+
+	def dy
+		(@a2.y - @a1.y)
+	end
+
+	def angle
+		if(@angle.nil?)
+			@angle = Math.atan2(self.dy, self.dx)
+		end
+
+		@angle
+	end
+
+	# Manhattan distance for faster computation
+	def manhattan_dist
+		(self.dx.abs + self.dy.abs)
+	end
+
+	def sort_val
+		(angle * 1000) + manhattan_dist
+	end
+
+	def to_s
+		"#{@a1.key} -> #{@a2.key}, #{self.sort_val} #{@angle}"
+	end
+end
+
 class Asteroid
-  attr_accessor :x, :y, :neighbours
+  attr_accessor :x, :y, :neighbours, :destroyed
 
   @@all_asteroids = {}
   def self.all_asteroids
@@ -13,6 +52,7 @@ class Asteroid
     @x = x
     @y = y
     @neighbours = {}
+    @destroyed = false
 
     @@all_asteroids[self.key] = self
   end  
@@ -121,18 +161,34 @@ class Asteroid
   	@@all_asteroids[k]
   end
 
-  def self.find_best
+  def self.find_base
   	maxNeighbours = 0
-  	bestKey = nil
+  	baseKey = nil
 
   	@@all_asteroids.each do |k,v|
   		if(v.neighbours.count > maxNeighbours)
-  			bestKey = k
+  			baseKey = k
   			maxNeighbours = v.neighbours.count
   		end
   	end
 
-  	@@all_asteroids[bestKey]
+  	@@all_asteroids[baseKey]
+  end
+
+  def self.destroy_asteroids(base, limit)
+  	lines = []
+  	@@all_asteroids.each do |k, a|
+  		next if(k == base.key)
+
+  		lines << Line.new(base, a)
+  	end
+
+  	# lines.sort { |l1, l2| l1.sort_val <=> l2.sort_val }
+
+  	lines.each do |l|
+  		puts l
+  	end
+  	
   end
 end
 
@@ -153,5 +209,8 @@ puts "Part 1"
 Asteroid::build_connections
 #Asteroid::print_asteroids(:verbose)
 #Asteroid::print_asteroids(:compact)
-best = Asteroid::find_best
-puts "#{best.key} is the best asteroid with #{best.neighbours.count} neighbours"
+base = Asteroid::find_base
+puts "#{base.key} is the base asteroid with #{base.neighbours.count} neighbours"
+
+puts "\nPart 2"
+Asteroid::destroy_asteroids(base,200)
