@@ -7,6 +7,8 @@ File.open('day1.data').each do |line|
   vals << line.to_i
 end
 
+# Part 1
+
 product = 0
 vals.each_with_index do |v1, i|
 	vals.each_with_index do |v2, j|
@@ -21,10 +23,18 @@ end
 
 puts "Part 1: #{product}"
 
-# class Node
-#   attr_accessor :val
+# Part 2
+vals.each_with_index do |v1, i|
+	vals.each_with_index do |v2, j|
+		vals.each_with_index do |v3, k|
+			next if i == j || i == k || j == k
 
-#   def initialize(val)
-#     @val = val
-#   end
-# end
+			if(v1 + v2 + v3 == 2020)
+				product = v1 * v2 * v3
+				break
+			end
+		end
+	end
+end
+
+puts "Part 2: #{product}"
