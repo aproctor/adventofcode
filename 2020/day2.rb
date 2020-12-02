@@ -11,7 +11,7 @@ class Password
     @val = v
   end
 
-  def valid?
+  def p1_valid?
   	count = 0
   	@val.each_char do |c|
   		count += 1 if c == @limit_char
@@ -19,11 +19,22 @@ class Password
 
   	count <= @max && count >= @min
   end
+
+  def p2_valid?
+  	return false if @max > @val.length
+
+  	count = 0
+  	count += 1 if @val[@min-1] == @limit_char
+  	count += 1 if @val[@max-1] == @limit_char
+
+  	count == 1
+  end
 end
 
 
 passwords = []
-valid_count = 0
+p1_valid_count = 0
+p2_valid_count = 0
 File.open('day2.data').each do |line|
   next if(line.nil?)
 
@@ -33,12 +44,12 @@ File.open('day2.data').each do |line|
   	pass = Password.new(md[1].to_i, md[2].to_i, md[3], md[4])
   	passwords << pass
 
-  	if pass.valid?
-  		valid_count += 1
-  	end
+  	p1_valid_count += 1 if pass.p1_valid?
+  	p2_valid_count += 1 if pass.p2_valid?
   end
 end
 
-puts "#{valid_count} of #{passwords.length} are valid"
+puts "Part 1: #{p1_valid_count} of #{passwords.length} are valid"
+puts "Part 2: #{p2_valid_count} of #{passwords.length} are valid"
 
 
