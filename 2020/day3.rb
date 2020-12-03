@@ -1,34 +1,38 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2020/day/3
 
-cur_pos = 0
-x_vel = 3
-tree_count = 0
+def trees_hit(x_vel, y_vel)
+	cur_pos = 0
+	tree_count = 0
 
-File.open('day3.data').each do |line|
-  next if(line.nil?)
-  i = cur_pos % (line.length - 1) # ignore \n
+	cur_row = 0
 
-  x = line[i]
-  if(x == "#")
-  	line[i] = "X"
-  	tree_count += 1
-  else
-  	line[i] = "O"
-  end
-  puts line
+	File.open('day3.data').each do |line|
+	  next if(line.nil?)
 
+	  if(cur_row % y_vel == 0)
+		  i = cur_pos % (line.length - 1) # ignore \n
 
-  #move for next line
-  cur_pos += x_vel
+		  x = line[i]
+		  if(x == "#")
+		  	line[i] = "X"
+		  	tree_count += 1
+		  else
+		  	line[i] = "O"
+		  end
+		  # puts line
+
+		  cur_pos += x_vel
+		end
+
+	  cur_row += 1
+	end
+	tree_count
 end
 
-puts "Trees hit: #{tree_count}"
+puts "Part 1:"
+puts "Trees hit: #{trees_hit(3,1)}"
 
-# class Node
-#   attr_accessor :val
-
-#   def initialize(val)
-#     @val = val
-#   end
-# end
+puts "\nPart 2:"
+product = trees_hit(1,1) * trees_hit(3,1) * trees_hit(5,1) * trees_hit(7,1) * trees_hit(1,2)
+puts "Product: #{product}"
