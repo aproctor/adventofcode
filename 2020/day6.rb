@@ -11,14 +11,28 @@ class DeclarationForm
 
   def add_person(claim_string)
   	claim_string.each_char do |c|
-  		@yes_vals[c] = 1
+  		if @yes_vals.key?(c)
+  			@yes_vals[c] += 1
+  		else
+	  		@yes_vals[c] = 1
+	  	end
   	end
   	@members << claim_string
   end
 
   def yes_count
-  	#puts @members.inspect
+  	#puts @yes_vals.inspect
   	@yes_vals.keys.length
+  end
+
+  def all_yes_count
+  	total = 0
+  	all_count = @members.length
+  	@yes_vals.each do |k,v|
+  		total += 1 if v == all_count
+  	end
+
+  	total
   end
 end
 
@@ -39,7 +53,10 @@ end
 forms << form
 
 p1_sum = 0
+p2_sum = 0
 forms.each do |f|
 	p1_sum += f.yes_count
+	p2_sum += f.all_yes_count
 end
 puts "Part 1: #{p1_sum}"
+puts "Part 2: #{p2_sum}"
