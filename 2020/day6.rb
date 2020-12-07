@@ -116,11 +116,20 @@ end
 shiny_gold = bags["shiny gold"]
 parent_map = {}
 find_parents(shiny_gold, parent_map, bags)
-parent_map.each do |k,v|
-	puts k
+puts "Part 1: #{parent_map.keys.length}"
+
+
+# Part 2 - How many bags are in my shiny gold bag
+def nested_bag_count(bag_ref)
+	total_children = 1
+
+	BagConnection::children_of(bag_ref).each do |bcon|
+		total_children += bcon.number * nested_bag_count(bcon.child_ref)
+	end
+
+	total_children
 end
-puts parent_map.keys.length
 
-
-
+child_bag_count = nested_bag_count(shiny_gold.reference) - 1
+puts "Part 2: #{child_bag_count}"
 
