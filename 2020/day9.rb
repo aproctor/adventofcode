@@ -12,8 +12,6 @@ end
 
 def validate_sequence(numbers, preamble_length)
 	#puts numbers.inspect
-
-	invalid_number_index = -1
 	
 	numbers.each_with_index do |n, i|
 		next if i < preamble_length
@@ -31,21 +29,40 @@ def validate_sequence(numbers, preamble_length)
 
 		if(!valid_number)
 			puts "Invalid number: #{i}: #{n}"
-			invalid_number_index = i
-			break
+			return n
 		end		
 	end
 
-	if(invalid_number_index >= 0)
-		return false
-	else
-		puts "Sequence is valid"
+	return -1
+end
+
+def vulnerability(numbers, target)
+	(0..numbers.length-2).each do |i|
+		#puts "Trying #{i}"
+
+		total_sum = numbers[i]
+		min = max = numbers[i]
+		(i+1..numbers.length-1).each do |j|
+			total_sum += numbers[j]
+
+			min = numbers[j] if numbers[j] < min
+			max = numbers[j] if numbers[j] > max
+
+			if(total_sum == target)
+				puts "Target found starting at #{i} to #{j}"
+				return min + max
+			elsif total_sum > target
+					#sequence can't equal target
+					break
+			end
+		end
 	end
 
-	true
+	return -1;
 end
 
 puts "Part 1:"
-validate_sequence(numbers, 25)
+invalid_number = validate_sequence(numbers, 25)
 
-#puts "\nPart 2:"
+puts "\nPart 2:"
+puts vulnerability(numbers, invalid_number)
