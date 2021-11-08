@@ -48,6 +48,8 @@ class City
   def self.possible_paths
     shortest_path = nil
     shortest_distance = nil
+    longest_path = nil
+    longest_distance = nil
 
     @@city_map.keys.permutation.each_with_index do |a,i|
       d = path_distance(a)
@@ -58,10 +60,15 @@ class City
           shortest_path = a
           shortest_distance = d
         end
+        if(longest_distance.nil? || d > longest_distance)
+          longest_path = a
+          longest_distance = d
+        end
       end
     end
 
     puts "The shortest path is #{shortest_path.join(' -> ')} with a distance of #{shortest_distance}"
+    puts "The longest path is #{longest_path.join(' -> ')} with a distance of #{longest_distance}"
   end
 
   def self.path_distance(path)
