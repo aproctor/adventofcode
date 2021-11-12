@@ -7,6 +7,10 @@ require 'json'
 def recursive_sum_hash(obj)
 	sum = 0
 	obj.each do |k, v|
+		if(v == "red")
+			#ignore any object with a "red" attribute
+			return 0
+		end
 		if(v.is_a?(Array))
 			sum += recursive_sum_array(v)
 		elsif(v.is_a?(Hash))
