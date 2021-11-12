@@ -84,6 +84,11 @@ File.open('day13.data').each do |line|
   end
 end
 
+puts "Part 1: "
+Person::maximum_happiness
+
+puts "\n Part 2: "
+Person.find_or_create("Self")
 Person::maximum_happiness
 
 
