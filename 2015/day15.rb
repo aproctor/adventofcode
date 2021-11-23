@@ -32,17 +32,19 @@ class Recipe
 		@ingredients << i
 	end
 
-	def total_score(quantities)
+	def total_score(quantities, calorie_count=nil)
 		capacity_score = 0
 		durability_score = 0
 		flavor_score = 0
 		texture_score = 0
+		calories_score = 0
 
 		@ingredients.each_with_index do |ingredient, i|
 			capacity_score += ingredient.attributes[:capacity] * quantities[i]
 			durability_score += ingredient.attributes[:durability] * quantities[i]
 			flavor_score += ingredient.attributes[:flavor] * quantities[i]
 			texture_score += ingredient.attributes[:texture] * quantities[i]
+			calories_score += ingredient.attributes[:calories] * quantities[i]
 		end
 
 		#Clamp out negative values to 0
@@ -51,14 +53,18 @@ class Recipe
 		flavor_score = [flavor_score, 0].max
 		texture_score = [texture_score, 0].max
 
-		total_score = capacity_score * durability_score * flavor_score * texture_score
+		if(calorie_count.nil? || calories_score == calorie_count)
+			total_score = capacity_score * durability_score * flavor_score * texture_score
+		else
+			total_score = 0
+		end
 
 		puts "#{quantities.join(', ')} = #{total_score}"
 
 		total_score
 	end
 
-	def optimize
+	def optimize(calorie_count)
 		puts "Optimizing recipe with #{@ingredients.length} ingredients"
 
 		max_score = 0
@@ -68,7 +74,7 @@ class Recipe
 			101.times do |y|
 				101.times do |z|
 					quantities = [x, y, z, 100-x-y-z]
-					score = self.total_score(quantities)
+					score = self.total_score(quantities, calorie_count)
 					if(score > max_score)
 						max_score = score
 						max_quantities = quantities
@@ -92,6 +98,6 @@ File.open('day15.data').each do |line|
   recipe.add_ingredient(Ingredient.new(line.strip))
 end
 
-recipe.optimize
+recipe.optimize(500)
 
 
