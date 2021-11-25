@@ -10,30 +10,35 @@ def part1(target, containers)
 		indexes[i] = i
 	end
 
-	indexes.permutation.each_with_index do |combo, i|
-		puts "#{i}" if i % 1000000 == 0
-		total = 0
+	containers.length.times do |j|
 
-		used = []
-		combo.each do |bin|
-			val = containers[bin]
-			total += val
-			used << "#{val}:#{bin}"
-			break if total >= target
+		indexes.combination(j+1).each_with_index do |combo, i|
+			# puts "#{j}: #{i}" if i % 1000000 == 0
+			total = 0
+
+			used = []
+			combo.each do |bin|
+				val = containers[bin]
+				total += val
+				used << "#{val}:#{bin}"
+				break if total >= target
+			end
+
+			if(total == target) 
+				# puts "Combo #{combo} -> using #{used} = #{target}"
+				key = used.sort.join(',')
+				matches[key] = used.length
+			end	
 		end
-
-		if(total == target) 
-			# puts "Combo #{combo} -> using #{used} = #{target}"
-			key = used.sort.join(',')
-			puts "Match Found: #{key}"
-			matches[key] = total
-		end	
 	end
 
 	puts "#{matches.size} unique matches"
+	min_used = 9999999
 	matches.each do |k, v|
-		puts "\t#{k} = #{v}"
+		min_used = v if v < min_used
 	end
+
+	puts "Min used: #{min_used}"
 end
 
 # part1(25, [20, 15, 10, 5, 5])
