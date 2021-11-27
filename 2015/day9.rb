@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # Day 9
-# See http://adventofcode.com/day/1
+# See http://adventofcode.com/day/9
 
 class City
   @@city_map = {}
@@ -39,13 +39,70 @@ class City
     end
   end
 
+  def self.print_routes
+    @@city_map.each do |name, city|
+      city.print_route
+    end
+  end
 
-  # def route_string
-  #   puts "#{@name}: "
-  #   @routes.each do |r|
-  #     puts " -> #{r.destination.name}:#{r.distance}"
-  #   end
-  # end
+  def self.possible_paths
+    shortest_path = nil
+    shortest_distance = nil
+    longest_path = nil
+    longest_distance = nil
+
+    @@city_map.keys.permutation.each_with_index do |a,i|
+      d = path_distance(a)
+      puts "#{i}: #{a.join ' -> '} = #{d}"
+
+      if(!d.nil?)
+        if(shortest_distance.nil? || d < shortest_distance)
+          shortest_path = a
+          shortest_distance = d
+        end
+        if(longest_distance.nil? || d > longest_distance)
+          longest_path = a
+          longest_distance = d
+        end
+      end
+    end
+
+    puts "The shortest path is #{shortest_path.join(' -> ')} with a distance of #{shortest_distance}"
+    puts "The longest path is #{longest_path.join(' -> ')} with a distance of #{longest_distance}"
+  end
+
+  def self.path_distance(path)
+    total_distance = 0
+    path.each_with_index do |c, i|
+      break if(i == path.length - 1)
+      city1 = @@city_map[c]
+      city2 = @@city_map[path[i+1]]
+
+      r = city1.route_to(city2)      
+      return nil if(r.nil?)
+
+      total_distance += r.distance
+    end
+
+    total_distance
+  end
+
+  def route_to(city)
+    @routes.each do |r|
+      if(r.destination == city)
+        return r
+      end
+    end
+
+    nil
+  end
+
+  def print_route
+    puts "#{@name}: "
+    @routes.each do |r|
+      puts " -> #{r.destination.name}:#{r.distance}"
+    end
+  end
 end
 
 
@@ -62,10 +119,12 @@ end
 File.open('day9.data').each do |line|
   continue if(line.nil?)
 
-  md = line.match(/(\w+) -> (\w+) = (\d+)/)
+  md = line.match(/(\w+) to (\w+) = (\d+)/)
   if(!md.nil?)
-    City.join(md[1], md[2], md[3])
+    puts line
+    City.join(md[1], md[2], md[3].to_i)
   end
 end
 
-City.shortest_distance()
+City.print_routes
+City.possible_paths
