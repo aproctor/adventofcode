@@ -92,8 +92,7 @@ armor << Gear.new("armor", "Leather", 13, 0, 1)
 armor << Gear.new("armor", "Chainmail", 31, 0, 2)
 armor << Gear.new("armor", "Splintmail", 53, 0, 3)
 armor << Gear.new("armor", "Bandedmail", 75, 0, 4)
-#Platemail costs to much, might as well simplify until part 2
-#armor << Gear.new("armor", "Platemail", 102, 0, 5)
+armor << Gear.new("armor", "Platemail", 102, 0, 5)
 
 # Rings
 # You can buy 0-2 rings
@@ -182,7 +181,58 @@ def part1(weapons, armor, rings)
 	false
 end
 
+def part2(weapons, armor, rings)	
+		
+	loadouts = []
+	weapons.each do |w|			
+		armor.each do |a|
+			rings.each_with_index do |r1, i|
+				rings.each_with_index do |r2, j|
+					# The shop only has one of each item, so you can't buy, for example, two rings of Damage +3
+					next if i == j # || i > j  #we'll also skip any index for r2 < r1 as it's redundant
+
+					total_cost = w.cost + a.cost + r1.cost + r2.cost
+					k = "#{w.label},#{a.label},#{r1.label},#{r2.label}"
+					loadouts << {key: k, cost: total_cost, gear: [w, a, r1, r2]}
+				end
+			end
+		end
+	end
+
+
+	loadouts.sort! { |l1, l2| l2[:cost] - l1[:cost] }
+
+	loadouts.each do |l|
+		# puts "Fighting with a budget of #{budget}"
+		player = Character.new("player", 100, 0, 0)
+		boss = Character.new("boss", 109, 8, 2)	
+
+		l[:gear].each do |gear|
+			player.equip(gear)
+		end
+		# puts "Player: #{player.damage}, #{player.armor}"
+		# puts "Boss: #{boss.damage}, #{boss.armor}"
+
+		if !player.fight(boss)
+			puts "Defeat with a budget of #{l[:cost]}g.\nEquipment: #{l[:key]}"
+			return true
+		else
+			# puts "Victory :("
+		end
+	end
+	
+
+	puts "No losing loadouts found even with 1g budget"
+
+	#no winning strategy was found
+	false
+end
+
+puts "Part 1:"
 part1(weapons, armor, rings)
+
+puts "\n\nPart 2:"
+part2(weapons, armor, rings)
 
 
 
