@@ -1,18 +1,14 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2021/day/1
 
+increase_count = -1
+prev_reading = 0
 File.open('day1.data').each do |line|
   next if(line.nil?)
-  md = line.match(/day ([0-9]+)/)
-  if(!md.nil?)
-    puts md[1]
-  end
+  val = line.to_i
+  increase_count += 1 if val > prev_reading
+
+  prev_reading = val
 end
 
-# class Node
-#   attr_accessor :val
-
-#   def initialize(val)
-#     @val = val
-#   end
-# end
+puts "Part 1: #{increase_count}"
