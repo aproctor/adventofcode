@@ -9,6 +9,7 @@ class BingoCard
   def initialize()
     @rows = []
     @hits = {}
+    @won = false
   end
 
   def add_row(row_string)
@@ -33,6 +34,10 @@ class BingoCard
   	false
   end
 
+  def active?
+  	@won == false
+  end
+
   def valid?
   	@rows.length == BOARD_SIZE
   end
@@ -46,10 +51,12 @@ class BingoCard
   			hit_count += 1 if @hits.key?(k)
   		end
 
-  		return true if hit_count == BOARD_SIZE
+  		if hit_count == BOARD_SIZE
+  			@won = true
+  		end
   	end
 
-  	# check all cols
+  	# check all cols, even if we know we won on a row, BOARD_SIZE is small whatever
   	BOARD_SIZE.times do |i|
   		hit_count = 0
   		BOARD_SIZE.times do |j|
@@ -57,10 +64,12 @@ class BingoCard
   			hit_count += 1 if @hits.key?(k)
   		end
 
-  		return true if hit_count == BOARD_SIZE
+  		if hit_count == BOARD_SIZE
+  			@won = true
+  		end
   	end
 
-  	false
+  	@won
   end
 
   def score(last_call)
@@ -77,22 +86,26 @@ class BingoCard
 end
 
 
-def p1_play_bingo(cards, calls)
+def play_bingo(cards, calls)
+	winners = []
 	calls.each do |n|
 		# puts "Calling #{n}"
 		cards.each_with_index do |card, i|
+			next unless card.active?
+
 			if card.daub(n)
 				# puts "Hit on card #{i}"
 				if card.bingo?
 					puts "Bingo on card #{i}"
-					return card.score(n)
+					puts "Score #{card.score(n)}"
+					winners << i
 				end
 			end
 		end
 	end
 
-	puts "no winners"
-	0
+	# puts "Winners #{winners.inspect}"
+	puts "Part 2: Last winner = #{winners[-1]}"
 end
 
 
@@ -120,7 +133,6 @@ File.open('day4.data').each.with_index do |line, line_count|
 end
 bingo_cards << cur_card if cur_card.valid?
 
-puts "Part 1:"
-puts "Score #{p1_play_bingo(bingo_cards, calls)}"
+play_bingo(bingo_cards, calls)
 
 
