@@ -35,6 +35,15 @@ class Line
           points << [i, @y1]
         end
       end
+    else
+      xrange = (@x1 < @x2) ? (@x1 .. @x2) : (@x2 .. @x1)
+      # y = m (x - x1) + y1
+      slope = (@y2 - @y1) / (@x2 - @x1)
+
+      xrange.each do |x|
+        y = slope * (x - @x1) + @y1
+        points << [x, y]
+      end
     end
 
     points
@@ -85,7 +94,7 @@ class Board
         if @map.key?(k)
           vals << @map[k]
         else
-          vals << 0
+          vals << "."
         end        
       end
 
@@ -115,5 +124,5 @@ File.open('day5.data').each do |line|
 end
 
 puts "Part 1"
-board.draw
+# board.draw
 puts "Overlap Count: #{board.overlapping_nodes}"
