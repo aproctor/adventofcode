@@ -168,12 +168,12 @@ class Display
 
 		six_counts.each do |k,v|
 			if v == 3
-				# 0,9 contain c
+				# all contain a,b,f,g
 				# 1 = cf
 				if one_seq.include?(k)
 					# from the one_seq we shoud be able to find c
-					@cypher["c"] = k
-					@cypher["f"] = one_seq.sub(k, "")
+					@cypher["f"] = k
+					@cypher["c"] = one_seq.sub(k, "")
 				end
 			end
 		end
@@ -202,7 +202,7 @@ class Display
 
 		@decrypted_val = digits.join('').to_i
 
-		puts "#{@readout} = #{@decrypted_val}"
+		# puts "#{@readout} = #{@decrypted_val}"
 
 		@decrypted_val
   end
