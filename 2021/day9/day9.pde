@@ -4,6 +4,7 @@ int gridWidth = 10;
 int gridHeight = 5;
 int curStep = 0;
 int curLine = 0;
+int curGroup = 0;
 Cell[][] cells;
 
 void setup() {
@@ -15,7 +16,7 @@ void setup() {
 
 void keyPressed() {
   if(keyCode == TAB) {
-    loadState1();
+    loadState2();
   } else {
     step();
   }
@@ -24,7 +25,7 @@ void keyPressed() {
  
 void setupGrid() {
   println("Setup grid: "+gridHeight+"x"+gridWidth);
-  cells = new Cell[gridHeight][gridWidth];
+  cells = new Cell[gridHeight][gridWidth]; 
   
   for(int i = 0; i < gridHeight; i++) {
     for(int j = 0; j < gridWidth; j++) {
@@ -53,18 +54,28 @@ void setupGrid() {
 }
 
 void step() {
-  int totalOn = 0;
+  int cellsFilled = 0;
   
   // All of the lights update simultaneously; they all consider the same current state before moving to the next.
   for(int i = 0; i < gridHeight; i++) {
     for(int j = 0; j < gridWidth; j++) {
-      // cells[j][i].updateNextState();
+      Cell cell = cells[i][j];
+      if(curStep == 0 && cell.isLowPoint()) {
+        cell.group = curGroup++;
+      } else {
+        if(cell.group == 0 && cell.depth < 9) {
+            boolean updated = cell.copyLowestNeighbourGroup();
+            if(updated) {
+              cellsFilled += 1;
+            }
+        }
+      }
     }
   }
   
   curStep +=1;
   
-  println("Step " + curStep + ": " + totalOn);
+  println("Step " + curStep + ": Filled "+cellsFilled);
 }
 
 void draw() {
@@ -78,9 +89,18 @@ void draw() {
     for(int j = 0; j < gridWidth; j++) {
       Cell c = cells[i][j];
       
-      fill(150, 255, map(c.depth, 0,9,50,255));
+      int hue = 150;
+      int saturation = 255;
+      int brightness = (int)map(c.depth, 0,9,50,255);
+      if(c.group == 0) {
+        // saturation = 80;
+      } else {
+        hue = (int)map(c.group, 0, curGroup, 0, 255);
+        // println("Hue: "+hue+", Group: "+ c.group);
+      }
+      fill(hue, saturation, brightness);
       rect(c.x, c.y, cellSize, cellSize);
-      if(c.isLowPoint()) {
+      if(c.isLowPoint() && false) {
         fill(120, 255, 255);
         rect(c.x + 2, c.y+2, cellSize - 4, cellSize - 4);        
       }
@@ -108,7 +128,6 @@ void draw() {
   /* */
   
   // step();
-  noLoop();
 }
 
 void loadLine(String line) {
@@ -172,6 +191,7 @@ void loadState2() {
   
   curStep = 0;
   curLine = 0;
+  curGroup = 0;
   
   loadLine("7678921234988678901238954323498765432125789999567898765454223789989865432124569899894325678989212965");
   loadLine("6567890139876589992367896512987654321034569988979999879321012569876987573245979767799434599878909893");
