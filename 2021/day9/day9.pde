@@ -76,6 +76,23 @@ void step() {
   curStep +=1;
   
   println("Step " + curStep + ": Filled "+cellsFilled);
+  
+  if(cellsFilled == 0) {
+    HashMap<Integer, Integer> groupCounts = new HashMap<Integer,Integer>();
+    for(int i = 0; i < gridHeight; i++) {
+      for(int j = 0; j < gridWidth; j++) {
+        Cell cell = cells[i][j];
+        if(cell.group != 0) {
+          int count = (groupCounts.containsKey(cell.group)) ? groupCounts.get(cell.group) : 0;
+          groupCounts.put(cell.group, count+1);
+        }
+      }
+    }
+    
+    for(Integer count : groupCounts.values()) {
+     println("Group size: "+count); 
+    }
+  }
 }
 
 void draw() {
