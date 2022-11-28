@@ -28,7 +28,9 @@ class Light {
       this.on = true;
       this.charge = 0;
       for(Light light : neighbours) {
-        light.charge += 1;
+        if(light.on == false) {
+          light.charge += 1;
+        }
       }
       
       return true;

@@ -9,12 +9,12 @@ Light[][] lights;
 
 void setup() {
   size(600, 600);
-  loadState2();
+  loadState1();
 }
 
 void keyPressed() {
   if(keyCode == TAB) {
-    loadState2();
+    loadState1();
   } else {
     step();
   }
