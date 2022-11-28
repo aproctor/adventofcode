@@ -9,12 +9,12 @@ Light[][] lights;
 
 void setup() {
   size(600, 600);
-  loadState1();
+  loadState3();
 }
 
 void keyPressed() {
   if(keyCode == TAB) {
-    loadState1();
+    loadState3();
   } else {
     step();
   }
@@ -78,6 +78,10 @@ void step() {
   curStep +=1;
   
   flashCount += totalFlashes;
+  
+  if(totalFlashes == gridHeight * gridWidth) {
+    println("All Flashed on Step "+curStep);
+  }
   
   println("Step " + curStep + ": +" + totalFlashes + " =  " + flashCount + " Total");
 }
@@ -172,4 +176,26 @@ void loadState2() {
   loadLine("19991");
   loadLine("11111");
   
+}
+
+void loadState3() {
+  gridWidth = 10;
+  gridHeight = 10;
+  lightSize = 20;
+  setupGrid();
+  
+  curStep = 0;
+  curLine = 0;
+  flashCount = 0;
+  
+  loadLine("4836484555");
+  loadLine("4663841772");
+  loadLine("3512484556");
+  loadLine("1481547572");
+  loadLine("7741183422");
+  loadLine("8683222882");
+  loadLine("4215244233");
+  loadLine("1544712171");
+  loadLine("5725855786");
+  loadLine("1717382281");
 }
