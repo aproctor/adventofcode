@@ -19,12 +19,17 @@ class OPoint {
     }
   }
   
+  public String getCoords() {
+    return x + "," + y;
+  }
+  
   public void draw(float scaleFactor, int padding) {
-    fill(255);
-    
     if(scaleFactor <= 1) {
+      stroke(255);
       point(this.x, this.y);
     } else {
+      fill(255);
+      stroke(0);
       rect(this.x*scaleFactor + padding, this.y*scaleFactor + padding, scaleFactor, scaleFactor);
     }
   }

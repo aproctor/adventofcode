@@ -1,4 +1,4 @@
-//Part 2 secret?  AHPRPAU
+//Part 2 secret:  AHPRPAUZ
 
 
   BufferedReader reader;
@@ -10,7 +10,7 @@
   int minY = 0;
   int maxX = 0;
   int maxY = 0;
-  int padding = 2;
+  int padding = 10;
   float scaleFactor = 1f;
   
   void setup() {
@@ -40,9 +40,11 @@
   }
   
   void optimizePoints() {
+    HashMap<String,OPoint> uniquePoints = new HashMap<String,OPoint>();
+    
     int newMaxX = 0;
     int newMaxY = 0;
-    for(OPoint point : points) {
+    for(OPoint point : points) {      
         if(point.x > newMaxX) {
           newMaxX = point.x;
         }
@@ -50,11 +52,15 @@
           newMaxY = point.y;
         }
         
-        //TODO remove duplicate points
+        String coords = point.getCoords();
+        uniquePoints.put(coords, point); 
     }
     
-    System.out.println("New X<"+newMaxX+"> old <"+maxX+">");
-    System.out.println("New Y<"+newMaxY+"> old <"+maxY+">");
+    points = new ArrayList<OPoint>(uniquePoints.values());
+    
+    //System.out.println("New X<"+newMaxX+"> old <"+maxX+">");
+    //System.out.println("New Y<"+newMaxY+"> old <"+maxY+">");
+    System.out.println("There are now " + points.size() + " points");
     
     maxX = newMaxX;
     maxY = newMaxY;
