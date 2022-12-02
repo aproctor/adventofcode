@@ -13,6 +13,12 @@ p1_map = {
   "Z" => "C"
 }
 
+p2_map = {
+  "X" => :lose,
+  "Y" => :tie,
+  "Z" => :win
+}
+
 rounds = []
 
 WIN_SCORE = 6
@@ -32,6 +38,18 @@ def win_score(move, opp)
   end
 end
 
+def player_move_for_result(opp, result)
+  return opp if result == :tie
+
+  if opp == "A"
+    return (result == :win) ? "B" : "C"
+  elsif opp == "B"
+    return (result == :win) ? "C" : "A"
+  elsif opp == "C"
+    return (result == :win) ? "A" : "B"
+  end
+end
+
 File.open('day2.data').each do |line|
   next if(line.nil?)
   md = line.split(' ')
@@ -40,10 +58,26 @@ File.open('day2.data').each do |line|
   end
 end
 
+# P1
+# total_score = 0
+# rounds.each do |r|
+#   opp_move = r[0]
+  
+#   player_move = p1_map[r[1]]
+#   score = points[player_move] + win_score(player_move, opp_move)
+  
+#   total_score += score
+
+#   puts "#{opp_move} vs #{player_move} = #{score}"
+# end
+# puts "Total Score: #{total_score}"
+
+# P2 
 total_score = 0
 rounds.each do |r|
-  opp_move = r[0]  
-  player_move = p1_map[r[1]]
+  opp_move = r[0]
+  result = p2_map[r[1]]
+  player_move = player_move_for_result(opp_move, result)
   score = points[player_move] + win_score(player_move, opp_move)
   
   total_score += score
