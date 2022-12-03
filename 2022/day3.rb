@@ -1,18 +1,36 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2022/day/3
 
-File.open('day3.data').each do |line|
-  next if(line.nil?)
-  md = line.match(/day ([0-9]+)/)
-  if(!md.nil?)
-    puts md[1]
-  end
+def letter_value(letter)
+  return (letter.ord - 'A'.ord + 27) if letter.ord < 'a'.ord
+
+  (letter.ord - 'a'.ord + 1)
 end
 
-# class Node
-#   attr_accessor :val
+def bag_sum(contents)
+  #puts "Bag sum for <#{contents}>"
 
-#   def initialize(val)
-#     @val = val
-#   end
-# end
+  existing = {}
+
+  mid = contents.length / 2
+
+  contents.each_char.with_index do |c,i|
+    if i < mid
+      existing[c] = 1
+    elsif existing.key? c
+      # puts "duplicate found: #{c} with val #{letter_value(c)}"
+      return letter_value(c)
+    end
+  end
+
+  0
+end
+
+total = 0
+File.open('day3.data').each do |line|
+  next if(line.nil?)
+
+  total += bag_sum(line.strip) if line.length > 1
+end
+
+puts "Total: #{total}"
