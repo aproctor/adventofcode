@@ -51,7 +51,7 @@ File.open('day5.data').each.with_index do |line, i|
     num_cols.times do |x|
       targetChar = line[x*4 + 1]
       if targetChar != " "
-        columns[x+1] << targetChar
+        columns[x+1] << targetChar        
       end
     end    
   end 
@@ -63,6 +63,10 @@ File.open('day5.data').each.with_index do |line, i|
   end
 end
 
+#Deep Copy columns for p2 since it's operations are very different
+p2_columns = Marshal.load(Marshal.dump(columns))
+
+# Part 1
 puts "Initial layout:"
 print_columns(columns)
 
@@ -71,14 +75,33 @@ instructions.each.with_index do |ins, i|
     columns[ins[2]].unshift c
   end
 
-  puts "After Step #{i+1}:"
-  print_columns(columns)
+  # puts "After Step #{i+1}:"
+  # print_columns(columns)
 end
 
-# Part 1 - top of each stack
 p1_result = []
 num_cols.times do |i|
   p1_result << columns[i+1][0]
 end
 puts "Part 1: #{p1_result.join('')}"
+
+
+# Part 2
+columns = p2_columns
+instructions.each.with_index do |ins, i|
+  columns[ins[1]].shift(ins[0]).reverse_each do |c|
+    columns[ins[2]].unshift c
+  end
+
+  # puts "After Step #{i+1}:"
+  # print_columns(columns)
+end
+
+print_columns(p2_columns)
+
+p2_result = []
+num_cols.times do |i|
+  p2_result << columns[i+1][0]
+end
+puts "Part 2: #{p2_result.join('')}"
 
