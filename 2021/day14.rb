@@ -37,7 +37,7 @@ class Element
 
   def self.p1_solution
   	# puts @@counts.inspect
-  	
+
   	min_val = nil
   	max_val = nil
   	@@counts.each do |k, v|
@@ -52,9 +52,13 @@ class Element
 
   	max_val - min_val
   end
+
+  def self.debug_print
+  	puts @@counts.inspect
+  end
 end
 
-MAX_STEPS = 10
+MAX_STEPS = 40
 
 p1_map = {}
 
@@ -96,6 +100,7 @@ end
 # Part 1
 
 (1..MAX_STEPS).each do |s|
+	puts "Step #{s}/#{MAX_STEPS}"
 
 	cur_node = root
 	while !cur_node.next.nil? do
@@ -108,8 +113,8 @@ end
 			cur_node = cur_node.next	
 		end		
 	end
-	
-	# puts "After step #{s}:\t#{root.sequence}"
+
+	Element::debug_print
 end
 
 puts "Part 1:"
