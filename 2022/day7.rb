@@ -5,6 +5,7 @@ class TreeNode
   attr_accessor :children, :fname, :parent, :fsize, :ftype
   @@path_map = {}
   @@collected_folders = []
+  @@smallest_folder = nil
 
   def initialize(fname, ftype, parent)
     @fname = fname
@@ -81,11 +82,25 @@ class TreeNode
     total = 0
 
     @@collected_folders.each do |d|
-      puts "#{d.path} is #{d.size}"
+      #puts "#{d.path} is #{d.size}"
       total += d.size
     end
 
     total
+  end
+
+  def find_smallest_folder_gte(target_size)
+    @@smallest_folder = self if @@smallest_folder.nil?
+
+    if self.size >= target_size && @ftype == :dir
+      @@smallest_folder = self if self.size < @@smallest_folder.size
+      
+      @children.each do |c|
+        c.find_smallest_folder_gte(target_size)
+      end
+    end
+
+    @@smallest_folder
   end
 
   def debug_print_contents(depth = 0, max_depth = 15)   
@@ -237,3 +252,17 @@ end
 #root.debug_print_contents
 puts "Part 1:"
 puts root.sum_folders_gt(100000)
+
+
+puts "\nPart 2:"
+total_disk_size = 70000000
+required_free_space = 30000000
+free_space = total_disk_size - root.size
+if required_free_space > free_space
+  target_free_space = required_free_space - free_space
+
+  puts "We need to free up #{target_free_space} to run the update"
+
+  smallest = root.find_smallest_folder_gte(target_free_space)
+  puts "Target folder is [#{smallest.path}] with size #{smallest.size}"
+end
