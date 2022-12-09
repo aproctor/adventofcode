@@ -3,13 +3,14 @@
 
 
 class ElfTree
-  attr_accessor :x, :y, :height, :visible
+  attr_accessor :x, :y, :height, :visible, :focused
 
   def initialize(x, y, height)
     @height = height
     @x = x
     @y = y
     @visible = false
+    @focused = false
   end
 
   def coord
@@ -93,12 +94,81 @@ class Forest
     count
   end
 
+  def p2_explore
+    max_y = @cur_y - 1 # simplify references so it's consistent with max_x
+
+    highest_score = 0
+
+    @tree_map.values.each do |tree|
+      reset_visibility()
+      tree.focused = true
+
+      scenic_score = 1
+
+      right_view = 0
+      # look to the right
+      (tree.x+1..@max_x).each do |x|
+        coord = "#{x},#{tree.y}"
+        t2 = @tree_map[coord]
+        t2.visible = true
+        right_view += 1
+        break if t2.height >= tree.height       
+      end
+
+
+      left_view = 0
+      #look to the left
+      (0..tree.x-1).each do |offset|
+        x = tree.x-1 - offset
+        coord = "#{x},#{tree.y}"
+        t2 = @tree_map[coord]
+        t2.visible = true
+        left_view += 1
+        break if t2.height >= tree.height       
+      end
+
+      #look down
+      down_view = 0
+      (tree.y+1..max_y).each do |y|
+        coord = "#{tree.x},#{y}"
+        t2 = @tree_map[coord]
+        t2.visible = true
+        down_view += 1
+        break if t2.height >= tree.height  
+      end
+
+      #look up
+      up_view = 0
+      (0..tree.y-1).each do |offset|
+        y = tree.y-1 - offset
+
+        coord = "#{tree.x},#{y}"
+        t2 = @tree_map[coord]
+        t2.visible = true
+        up_view += 1
+        break if t2.height >= tree.height  
+      end
+
+      scenic_score = left_view * right_view * down_view * up_view
+
+      highest_score = scenic_score if scenic_score > highest_score
+
+      # if tree.x == 2 && tree.y == 3
+      #   debug_print
+      #   puts "Scenic Score: #{scenic_score}"
+      # end
+    end
+
+    highest_score
+  end
+
   def debug_print
     @cur_y.times do |y|
       buffer = []
       (0..@max_x).each do |x|
         tree = @tree_map["#{x},#{y}"]
         color = (tree.visible) ? 32 : 30
+        color = 31 if tree.focused
         buffer << "\e[#{color}m"
         buffer << tree.height
         buffer << "\e[0m"
@@ -112,6 +182,7 @@ private
   def reset_visibility
     @tree_map.values.each do |t|
       t.visible = false
+      t.focused = false
     end
   end
 
@@ -141,7 +212,10 @@ end
 
 puts "Part 1"
 puts forest.p1_explore
-forest.debug_print
+#forest.debug_print
+
+puts "Part 2"
+puts forest.p2_explore
 
 # [30,32,92,30].each do |i|
 #   puts "\e[#{i}m#{i}\e[0m"
