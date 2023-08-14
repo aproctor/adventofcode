@@ -12,7 +12,7 @@ import java.util.*;
   int maxX = 0;
   int maxY = 0;
   int padding = 10;
-  int stepsPerFrame = 0;
+  int stepsPerFrame = 100;
   int connections = 9;
   float scaleFactor = 1f;
   MoveInstruction currentInstruction;
@@ -20,8 +20,8 @@ import java.util.*;
   void setup() {
     //size(1400, 1000);
     size(800, 800);
-    //loadFile("day9.data");
-    loadFile("instructions.txt");
+    loadFile("day9.data");
+    //loadFile("instructions.txt");
   }
   
  void keyPressed() {
