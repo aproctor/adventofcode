@@ -157,6 +157,9 @@ class Forest
       #   debug_print
       #   puts "Scenic Score: #{scenic_score}"
       # end
+
+      system("clear")
+      debug_print
     end
 
     highest_score
