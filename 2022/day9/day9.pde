@@ -12,6 +12,7 @@ import java.util.*;
   int maxX = 0;
   int maxY = 0;
   int padding = 10;
+  int stepsPerFrame = 10;
   float scaleFactor = 1f;
   MoveInstruction currentInstruction;
   
@@ -34,8 +35,9 @@ import java.util.*;
     if(currentInstruction == null) {
       if(instructions.size() > 0) {
         currentInstruction = instructions.remove(0);
+      } else {
+        return 0;
       }
-      return 0;
     }    
     if(currentInstruction != null) {
       head.move(currentInstruction);
@@ -49,6 +51,8 @@ import java.util.*;
       }      
     }
     System.out.println("Number of unique points <"+visitedPoints.size()+">");
+    
+    adjustScale();
     
     return 1;
   }
@@ -117,9 +121,9 @@ void adjustScale() {
   
   if(w < width && h < height) {
     if(w > h) {      
-      scaleFactor = (int) width / w / 10;
+      scaleFactor = (int) width / w;
     } else {
-      scaleFactor = (int) height / h / 10;
+      scaleFactor = (int) height / h;
     }
   } else {
     scaleFactor = 1;
@@ -144,8 +148,8 @@ void draw() {
   }
   
   
-  for(int i = 0; i < 100; i++) {
+  for(int i = 0; i < stepsPerFrame; i++) {
     if(step() == 0)
       break;
-  }  
+  }
 }
