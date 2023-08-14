@@ -3,7 +3,7 @@ import java.util.*;
   BufferedReader reader;
   String line;
   RopePiece head;
-  RopePiece tail;
+  ArrayList<RopePiece> segments;
   ArrayList<MoveInstruction> instructions;
   HashSet<PVector> visitedPoints;
   
@@ -12,15 +12,16 @@ import java.util.*;
   int maxX = 0;
   int maxY = 0;
   int padding = 10;
-  int stepsPerFrame = 10;
+  int stepsPerFrame = 0;
+  int connections = 9;
   float scaleFactor = 1f;
   MoveInstruction currentInstruction;
   
   void setup() {
     //size(1400, 1000);
-    size(800, 600);
-    loadFile("day9.data");
-    //loadFile("instructions.txt");
+    size(800, 800);
+    //loadFile("day9.data");
+    loadFile("instructions.txt");
   }
   
  void keyPressed() {
@@ -41,9 +42,13 @@ import java.util.*;
     }    
     if(currentInstruction != null) {
       head.move(currentInstruction);
-      tail.follow(head, 1);
-            
-      visitedPoints.add(new PVector(tail.x, tail.y));
+      RopePiece lastSegment = head;
+      for(int i = 1; i < segments.size(); i++) {
+        lastSegment = segments.get(i);
+        lastSegment.follow(segments.get(i-1), 1);        
+      }
+      
+      visitedPoints.add(new PVector(lastSegment.x, lastSegment.y));
       
       currentInstruction.magnitude -= 1;
       if(currentInstruction.magnitude <= 0) {
@@ -58,11 +63,17 @@ import java.util.*;
   }
   
   void loadFile(String fname) {
+    segments = new ArrayList<RopePiece>();
+    
     head = new RopePiece("H", 0, 0);
     head.fillColor = color(0,255,0);
+    segments.add(head);
     
-    tail = new RopePiece("T", 0, 0);
-    tail.fillColor = color(0,0,255);
+    for(int i = 0; i < connections; i++) {
+      RopePiece segment = new RopePiece(""+(i+1), 0, 0);
+      segment.fillColor = color(0,0,255);
+      segments.add(segment);
+    }
     
     instructions = new ArrayList<MoveInstruction>();
     visitedPoints = new HashSet<PVector>();
@@ -143,10 +154,9 @@ void draw() {
   }
    
   head.draw(scaleFactor, padding);
-  if(tail.x != head.x || tail.y != head.y) {
-    tail.draw(scaleFactor, padding);
-  }
-  
+  for(int i = 0; i < segments.size(); i++) {
+    segments.get(segments.size() - 1 - i).draw(scaleFactor, padding);
+  }  
   
   for(int i = 0; i < stepsPerFrame; i++) {
     if(step() == 0)
