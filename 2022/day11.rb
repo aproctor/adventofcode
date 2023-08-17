@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2022/day/11
 
-NUM_ROUNDS = 20
+NUM_ROUNDS = 10000
 
 OPERATORS = {
   "*" => :mul,
@@ -18,13 +18,14 @@ OP_LANG = {
 }
 
 class Monkey
-  attr_accessor :index, :items, :operator, :curry, :test_val, :yes_target, :no_target, :total
+  attr_accessor :index, :items, :operator, :curry, :test_val, :yes_target, :no_target, :total, :limit
 
   def initialize(i)
     @index = i
     @ref_self = false
     @verbose = false
     @total = 0
+    @limit = 9999999999
   end
 
   def operation(op, value)
@@ -51,8 +52,9 @@ class Monkey
 
       puts "    Worry level #{OP_LANG[@operator]} #{trans_input} to #{result}." if @verbose
 
-      result = (result / 3).floor
-      puts "    Monkey gets bored with item. Worry level is divided by 3 to #{result}." if @verbose
+      #result = (result / 3).floor
+      #puts "    Monkey gets bored with item. Worry level is divided by 3 to #{result}." if @verbose
+      result = result % @limit
 
       t = nil
       if result % @test_val == 0
@@ -99,6 +101,7 @@ end
 ##
 monkeys = {}
 cur_monkey = nil
+gcd = 1
 File.open('day11.data').each do |line|
   next if(line.nil?)
 
@@ -127,7 +130,10 @@ File.open('day11.data').each do |line|
 
   md = line.match(/Test: divisible by ([0-9]+)/)
   if(!md.nil?)
-    cur_monkey.test_val = md[1].to_i
+    divisor = md[1].to_i
+    cur_monkey.test_val = divisor
+
+    gcd = gcd * divisor
     next
   end
 
@@ -150,6 +156,10 @@ File.open('day11.data').each do |line|
   raise "unknown line! \"#{line.strip}\""
 end
 
+monkeys.values.each do |m|
+  m.limit = gcd
+end
+
 puts "Initial monkeys"
 puts monkeys.values
 
@@ -166,9 +176,11 @@ NUM_ROUNDS.times do |r|
 
 
 
-  puts "After round #{r+1}, the monkey sare holding items with these worry levels:"
-  puts monkeys.values
+  #puts "After round #{r+1}, the monkey sare holding items with these worry levels:"
+  #puts monkeys.values
+  print "#{r}\r"
 end
+$stdout.flush
 
 totals = []
 monkeys.values.each do|m|
@@ -177,5 +189,5 @@ monkeys.values.each do|m|
 end
 totals.sort!
 
-puts "Part 1"
+puts "Answer"
 puts totals[-1] * totals[-2]
