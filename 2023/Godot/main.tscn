@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2dgewktcwa2b"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_fx4et"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fx4et")
+
+[node name="MenuButtons" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 176.0
+offset_bottom = 481.0
+
+[node name="Day1" type="Button" parent="MenuButtons"]
+layout_mode = 2
+text = "Day 1"
+
+[node name="Day2" type="Button" parent="MenuButtons"]
+layout_mode = 2
+text = "Day 2"
+
+[node name="DebugText" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 188.0
+offset_top = 1.0
+offset_right = 1155.0
+offset_bottom = 632.0
+text = "Debug Text"
+
+[connection signal="pressed" from="MenuButtons/Day1" to="." method="_on_day_1_pressed"]
+[connection signal="pressed" from="MenuButtons/Day2" to="." method="_on_day_2_pressed"]
