@@ -24,13 +24,46 @@ text = "Day 1"
 layout_mode = 2
 text = "Day 2"
 
-[node name="DebugText" type="RichTextLabel" parent="."]
+[node name="DayDetails" type="VFlowContainer" parent="."]
 layout_mode = 0
 offset_left = 188.0
-offset_top = 1.0
-offset_right = 1155.0
-offset_bottom = 632.0
-text = "Debug Text"
+offset_right = 1138.0
+offset_bottom = 645.0
+
+[node name="TopBar" type="HFlowContainer" parent="DayDetails"]
+layout_mode = 2
+
+[node name="DayLabel" type="Label" parent="DayDetails/TopBar"]
+layout_mode = 2
+text = "Day"
+
+[node name="InputOptions" type="OptionButton" parent="DayDetails/TopBar"]
+layout_mode = 2
+allow_reselect = true
+
+[node name="RunButton" type="Button" parent="DayDetails/TopBar"]
+layout_mode = 2
+text = "Run"
+
+[node name="InputText" type="TextEdit" parent="DayDetails"]
+custom_minimum_size = Vector2(950, 150)
+layout_mode = 2
+placeholder_text = "Input Text"
+
+[node name="Label" type="Label" parent="DayDetails"]
+layout_mode = 2
+text = "Output"
+
+[node name="OutputText" type="TextEdit" parent="DayDetails"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DebugText" type="TextEdit" parent="DayDetails"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Debug Text"
+editable = false
 
 [connection signal="pressed" from="MenuButtons/Day1" to="." method="_on_day_1_pressed"]
 [connection signal="pressed" from="MenuButtons/Day2" to="." method="_on_day_2_pressed"]
+[connection signal="item_selected" from="DayDetails/TopBar/InputOptions" to="." method="_on_input_options_item_selected"]
