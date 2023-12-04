@@ -21,6 +21,7 @@ input_files = Array[String](["res://Solutions/Day1/day1_sample1.txt", "res://Sol
 
 [node name="Day2" type="Node" parent="Days"]
 script = ExtResource("3_mnndr")
+input_files = Array[String](["res://Solutions/Day2/day2_sample.txt", "res://Solutions/Day2/day2_data.txt"])
 
 [node name="MenuButtons" type="GridContainer" parent="."]
 layout_mode = 0
@@ -38,7 +39,6 @@ text = "Day 1"
 [node name="DayButton2" type="Button" parent="MenuButtons"]
 custom_minimum_size = Vector2(90, 45)
 layout_mode = 2
-disabled = true
 text = "Day 2"
 
 [node name="DayButton3" type="Button" parent="MenuButtons"]
