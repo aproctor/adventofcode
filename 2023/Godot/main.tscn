@@ -17,7 +17,7 @@ script = ExtResource("1_fx4et")
 
 [node name="Day1" type="Node" parent="Days"]
 script = ExtResource("2_v8mcb")
-input_files = Array[String](["res://Solutions/Day1/day1_sample.txt", "res://Solutions/Day1/day1_data.txt"])
+input_files = Array[String](["res://Solutions/Day1/day1_sample1.txt", "res://Solutions/Day1/day1_sample2.txt", "res://Solutions/Day1/day1_data.txt"])
 
 [node name="Day2" type="Node" parent="Days"]
 script = ExtResource("3_mnndr")
