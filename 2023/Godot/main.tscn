@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2dgewktcwa2b"]
+[gd_scene load_steps=4 format=3 uid="uid://b2dgewktcwa2b"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fx4et"]
+[ext_resource type="Script" path="res://Solutions/Day1/day1.gd" id="2_v8mcb"]
+[ext_resource type="Script" path="res://Solutions/Day2/day2.gd" id="3_mnndr"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -11,18 +13,171 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_fx4et")
 
-[node name="MenuButtons" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 176.0
-offset_bottom = 481.0
+[node name="Days" type="Node" parent="."]
 
-[node name="Day1" type="Button" parent="MenuButtons"]
+[node name="Day1" type="Node" parent="Days"]
+script = ExtResource("2_v8mcb")
+input_files = Array[String](["res://Solutions/Day1/day1_sample.txt", "res://Solutions/Day1/day1_data.txt"])
+
+[node name="Day2" type="Node" parent="Days"]
+script = ExtResource("3_mnndr")
+
+[node name="MenuButtons" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 185.0
+offset_bottom = 634.0
+columns = 2
+
+[node name="DayButton1" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
 layout_mode = 2
 text = "Day 1"
 
-[node name="Day2" type="Button" parent="MenuButtons"]
+[node name="DayButton2" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
 layout_mode = 2
+disabled = true
 text = "Day 2"
+
+[node name="DayButton3" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 3"
+
+[node name="DayButton4" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 4"
+
+[node name="DayButton5" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 5"
+
+[node name="DayButton6" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 6"
+
+[node name="DayButton7" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 7"
+
+[node name="DayButton8" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 8"
+
+[node name="DayButton9" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 9"
+
+[node name="DayButton10" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 10"
+
+[node name="DayButton11" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 11"
+
+[node name="DayButton12" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 12"
+
+[node name="DayButton13" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 13"
+
+[node name="DayButton14" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 14"
+
+[node name="DayButton15" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 15"
+
+[node name="DayButton16" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 16"
+
+[node name="DayButton17" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 17"
+
+[node name="DayButton18" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 18"
+
+[node name="DayButton19" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 19"
+
+[node name="DayButton20" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 20"
+
+[node name="DayButton21" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 21"
+
+[node name="DayButton22" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 22"
+
+[node name="DayButton23" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 23"
+
+[node name="DayButton24" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 24"
+
+[node name="DayButton25" type="Button" parent="MenuButtons"]
+custom_minimum_size = Vector2(90, 45)
+layout_mode = 2
+disabled = true
+text = "Day 25"
 
 [node name="DayDetails" type="VFlowContainer" parent="."]
 layout_mode = 0
@@ -41,9 +196,17 @@ text = "Day"
 layout_mode = 2
 allow_reselect = true
 
-[node name="RunButton" type="Button" parent="DayDetails/TopBar"]
+[node name="RunLabel" type="Label" parent="DayDetails/TopBar"]
 layout_mode = 2
 text = "Run"
+
+[node name="RunPart1" type="Button" parent="DayDetails/TopBar"]
+layout_mode = 2
+text = "Part 1"
+
+[node name="RunPart2" type="Button" parent="DayDetails/TopBar"]
+layout_mode = 2
+text = "Part 2"
 
 [node name="InputText" type="TextEdit" parent="DayDetails"]
 custom_minimum_size = Vector2(950, 150)
@@ -64,6 +227,34 @@ layout_mode = 2
 placeholder_text = "Debug Text"
 editable = false
 
-[connection signal="pressed" from="MenuButtons/Day1" to="." method="_on_day_1_pressed"]
-[connection signal="pressed" from="MenuButtons/Day2" to="." method="_on_day_2_pressed"]
+[node name="Day2" type="Node" parent="."]
+script = ExtResource("3_mnndr")
+
+[connection signal="pressed" from="MenuButtons/DayButton1" to="." method="_on_day_button_1_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton2" to="." method="_on_day_button_2_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton3" to="." method="_on_day_button_3_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton4" to="." method="_on_day_button_4_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton5" to="." method="_on_day_button_5_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton6" to="." method="_on_day_button_6_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton7" to="." method="_on_day_button_7_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton8" to="." method="_on_day_button_8_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton9" to="." method="_on_day_button_9_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton10" to="." method="_on_day_button_10_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton11" to="." method="_on_day_button_11_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton12" to="." method="_on_day_button_12_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton13" to="." method="_on_day_button_13_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton14" to="." method="_on_day_button_14_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton15" to="." method="_on_day_button_15_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton16" to="." method="_on_day_button_16_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton17" to="." method="_on_day_button_17_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton18" to="." method="_on_day_button_18_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton19" to="." method="_on_day_button_19_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton20" to="." method="_on_day_button_20_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton21" to="." method="_on_day_button_21_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton22" to="." method="_on_day_button_22_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton23" to="." method="_on_day_button_23_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton24" to="." method="_on_day_button_24_pressed"]
+[connection signal="pressed" from="MenuButtons/DayButton25" to="." method="_on_day_button_25_pressed"]
 [connection signal="item_selected" from="DayDetails/TopBar/InputOptions" to="." method="_on_input_options_item_selected"]
+[connection signal="pressed" from="DayDetails/TopBar/RunPart1" to="." method="_on_run_part_1_pressed"]
+[connection signal="pressed" from="DayDetails/TopBar/RunPart2" to="." method="_on_run_part_2_pressed"]
