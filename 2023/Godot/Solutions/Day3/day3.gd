@@ -25,37 +25,25 @@ func part_1(input) -> String:
 	var symbol_map = {}
 	var parts_list = []
 	
+	var number_regex = RegEx.new()
+	number_regex.compile("(\\d+)")
+	
 	# Process Map
 	var y = 0;
 	for input_line in input.split("\n"):
 		var x = 0
-		var cur_num = ""
-		var num_started = false
-		var num_ended = false
 		
-		# stupid hack to deal with numbers that end on the last char. Will replace later once I know more about part2
-		input_line = input_line + "."
+		var number_matches = number_regex.search_all(input_line)
+		for number_match in number_matches:
+			output += "Number found %s %d\n" % [number_match.get_string(), number_match.get_start()]
+			var new_part = ToolPart.new(number_match.get_string(), number_match.get_start(), y)
+			parts_list.append(new_part)
 		
 		for c in input_line:
-			if(c == "."):
-				num_ended = (num_started == true)
-			else:
+			if(c != "."):
 				var val = int(c)
 				if(val == 0 && c != "0"):
 					symbol_map[coord(x,y)] = c
-					num_ended = true
-				else:
-					num_started = true #even if already started
-					cur_num = cur_num + c
-				#output += "Found [%s] at %d,%d.  Value is %d\n" % [c, x, y, int(c)]
-			
-			if(num_ended == true && cur_num != ""):
-				var new_part = ToolPart.new(cur_num, x-1, y)
-				parts_list.append(new_part)
-				cur_num = ""
-				num_ended = false
-				num_started = false
-			
 			x+= 1;
 		y += 1
 	

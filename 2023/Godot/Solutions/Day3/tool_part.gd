@@ -11,9 +11,9 @@ var end_x : int = 0
 
 func _init(number_string, x_val, y_val):
 	number = int(number_string)
-	end_x = x_val
+	start_x = x_val
 	y = y_val
-	start_x = x_val - number_string.length() + 1
+	end_x = x_val + number_string.length() - 1
 	counted = false
 
 func overlap_hit(coord) -> bool:	
