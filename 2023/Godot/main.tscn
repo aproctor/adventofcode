@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2dgewktcwa2b"]
+[gd_scene load_steps=5 format=3 uid="uid://b2dgewktcwa2b"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fx4et"]
 [ext_resource type="Script" path="res://Solutions/Day1/day1.gd" id="2_v8mcb"]
 [ext_resource type="Script" path="res://Solutions/Day2/day2.gd" id="3_mnndr"]
+[ext_resource type="Script" path="res://Solutions/Day3/day3.gd" id="4_840cu"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -22,6 +23,10 @@ input_files = Array[String](["res://Solutions/Day1/day1_sample1.txt", "res://Sol
 [node name="Day2" type="Node" parent="Days"]
 script = ExtResource("3_mnndr")
 input_files = Array[String](["res://Solutions/Day2/day2_sample.txt", "res://Solutions/Day2/day2_data.txt"])
+
+[node name="Day3" type="Node" parent="Days"]
+script = ExtResource("4_840cu")
+input_files = Array[String](["res://Solutions/Day3/day3_sample.txt", "res://Solutions/Day3/day3_data.txt"])
 
 [node name="MenuButtons" type="GridContainer" parent="."]
 layout_mode = 0
@@ -44,7 +49,6 @@ text = "Day 2"
 [node name="DayButton3" type="Button" parent="MenuButtons"]
 custom_minimum_size = Vector2(90, 45)
 layout_mode = 2
-disabled = true
 text = "Day 3"
 
 [node name="DayButton4" type="Button" parent="MenuButtons"]
@@ -222,13 +226,11 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="DebugText" type="TextEdit" parent="DayDetails"]
+visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 placeholder_text = "Debug Text"
 editable = false
-
-[node name="Day2" type="Node" parent="."]
-script = ExtResource("3_mnndr")
 
 [connection signal="pressed" from="MenuButtons/DayButton1" to="." method="_on_day_button_1_pressed"]
 [connection signal="pressed" from="MenuButtons/DayButton2" to="." method="_on_day_button_2_pressed"]
