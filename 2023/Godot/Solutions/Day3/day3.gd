@@ -35,7 +35,7 @@ func part_1(input) -> String:
 		
 		var number_matches = number_regex.search_all(input_line)
 		for number_match in number_matches:
-			output += "Number found %s %d\n" % [number_match.get_string(), number_match.get_start()]
+			#output += "Number found %s %d\n" % [number_match.get_string(), number_match.get_start()]
 			var new_part = ToolPart.new(number_match.get_string(), number_match.get_start(), y)
 			parts_list.append(new_part)
 		
@@ -55,11 +55,54 @@ func part_1(input) -> String:
 			if(part.overlap_hit(c)):
 				total += part.number
 	
-	for part in parts_list:
-		if(!part.counted):
-			output += "%s\n" % [part]
-	
 	output += "Total = " + str(total)
 	
 	return output
 
+func part_2(input) -> String:
+	var total = 0;
+	var output = ""
+
+	var gear_map = {}
+	var parts_list = []
+	
+	var number_regex = RegEx.new()
+	number_regex.compile("(\\d+)")
+	
+	# Process Map
+	var y = 0;
+	for input_line in input.split("\n"):
+		var x = 0
+		
+		var number_matches = number_regex.search_all(input_line)
+		for number_match in number_matches:
+			#output += "Number found %s %d\n" % [number_match.get_string(), number_match.get_start()]
+			var new_part = ToolPart.new(number_match.get_string(), number_match.get_start(), y)
+			parts_list.append(new_part)
+		
+		# Find all Gears (*)
+		for c in input_line:
+			if(c == "*"):
+				gear_map[coord(x,y)] = c
+			x+= 1;
+		y += 1
+	
+	# Loop through parts, and evaluate adjacent pairs
+	for c in gear_map.keys():
+		var product = 1
+		var hits = 0
+		output += "Checking %s at %s: " % [gear_map[c], c]
+		
+		for part in parts_list:
+			#output += "  %s overlaps %s\n" % [c, str(part)]
+			if(part.overlaps(c)):
+				hits += 1
+				product = product * part.number
+		
+		output += "%d hits with ratio of %d\n" % [hits, product]
+		if(hits == 2):
+			total += product
+	
+	output += "Total = " + str(total)
+	
+	return output
