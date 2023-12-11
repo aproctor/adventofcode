@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b2dgewktcwa2b"]
+[gd_scene load_steps=9 format=3 uid="uid://b2dgewktcwa2b"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fx4et"]
 [ext_resource type="Script" path="res://Solutions/Day1/day1.gd" id="2_v8mcb"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Solutions/Day4/day4.gd" id="5_luwe5"]
 [ext_resource type="Script" path="res://Solutions/Day5/day5.gd" id="6_wg2f6"]
 [ext_resource type="Script" path="res://Solutions/Day6/day6.gd" id="7_dpq8l"]
+[ext_resource type="Script" path="res://Solutions/Day7/day7.gd" id="8_glxiw"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -42,6 +43,10 @@ input_files = Array[String](["res://Solutions/Day5/day5_sample.txt", "res://Solu
 [node name="Day6" type="Node" parent="Days"]
 script = ExtResource("7_dpq8l")
 input_files = Array[String](["res://Solutions/Day6/day6_sample.txt", "res://Solutions/Day6/day6_data.txt"])
+
+[node name="Day7" type="Node" parent="Days"]
+script = ExtResource("8_glxiw")
+input_files = Array[String](["res://Solutions/Day7/day7_sample.txt", "res://Solutions/Day7/day7_data.txt"])
 
 [node name="MenuButtons" type="GridContainer" parent="."]
 layout_mode = 0
@@ -84,7 +89,6 @@ text = "Day 6"
 [node name="DayButton7" type="Button" parent="MenuButtons"]
 custom_minimum_size = Vector2(90, 45)
 layout_mode = 2
-disabled = true
 text = "Day 7"
 
 [node name="DayButton8" type="Button" parent="MenuButtons"]
