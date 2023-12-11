@@ -2,7 +2,7 @@ extends Day
 
 class_name Day1
 
-func part_1(input) -> String:
+func part_1(input):
 	var total = 0;
 	var output = ""
 	
@@ -23,9 +23,9 @@ func part_1(input) -> String:
 	
 	output += "Total: " + str(total)
 		
-	return output
+	finish(output)
 
-func part_2(input) -> String:
+func part_2(input):
 	var total = 0;
 	var output = ""
 	
@@ -69,4 +69,4 @@ func part_2(input) -> String:
 	
 	output += "Total: " + str(total)
 		
-	return output
+	finish(output)

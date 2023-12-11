@@ -4,6 +4,7 @@ var input_file = '';
 
 var input_text_area_object = null;
 var output_text_area_object = null;
+var progress_bar_object = null;
 
 var input_options_object = null;
 var day_label_object = null;
@@ -11,10 +12,12 @@ var current_day = null;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#Maybe change these to exported node properties and map them in inspector?
 	input_options_object = get_node("DayDetails/TopBar/InputOptions")
 	day_label_object = get_node("DayDetails/TopBar/DayLabel")
 	input_text_area_object = get_node("DayDetails/InputText")
 	output_text_area_object = get_node("DayDetails/OutputText")
+	progress_bar_object = get_node("DayDetails/ProgressBar")
 
 
 func set_day(num):	
@@ -23,6 +26,10 @@ func set_day(num):
 	
 	input_text_area_object.text = ""
 	output_text_area_object.text = ""
+	current_day.output_updated.connect(_update_output)
+
+	_update_progress(0)	
+	current_day.progress_updated.connect(_update_progress)	
 	
 	day_label_object.text = "Day %d" % [num]
 		
@@ -38,11 +45,13 @@ func _on_input_options_item_selected(index):
 
 func _on_run_part_1_pressed():
 	if(current_day != null):
-		output_text_area_object.text = 	current_day.part_1(input_text_area_object.text)
+		_update_progress(0)		
+		current_day.part_1(input_text_area_object.text)
 
 func _on_run_part_2_pressed():
 	if(current_day != null):
-		output_text_area_object.text = 	current_day.part_2(input_text_area_object.text)
+		_update_progress(0)
+		current_day.part_2(input_text_area_object.text)
 
 func _on_day_button_1_pressed():
 	set_day(1)
@@ -142,3 +151,9 @@ func _on_day_button_24_pressed():
 
 func _on_day_button_25_pressed():
 	set_day(25)
+
+func _update_progress(val):
+	progress_bar_object.value = val
+
+func _update_output(out):
+	output_text_area_object.text = out

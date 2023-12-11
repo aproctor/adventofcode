@@ -2,7 +2,7 @@ extends Day
 
 class_name Day7
 
-func part_1(input) -> String:
+func part_1(input):
 	var output = ""
 	
 	#32T3K 765
@@ -31,9 +31,9 @@ func part_1(input) -> String:
 	
 	output += "Total: %d\n" % [total]
 	
-	return output
+	finish(output)
 
-func part_2(input) -> String:
+func part_2(input):
 	var output = ""
 	
 	#32T3K 765
@@ -59,7 +59,9 @@ func part_2(input) -> String:
 		var score = h.bid * r
 		output += "%d: %s has a score of %d\n" % [r, h, score]
 		total += score
+		
+	progress_updated.emit(0.7)
 	
 	output += "Total: %d\n" % [total]
 	
-	return output
+	finish(output)

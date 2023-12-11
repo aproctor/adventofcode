@@ -248,6 +248,10 @@ layout_mode = 2
 placeholder_text = "Debug Text"
 editable = false
 
+[node name="ProgressBar" type="ProgressBar" parent="DayDetails"]
+layout_mode = 2
+max_value = 1.0
+
 [connection signal="pressed" from="MenuButtons/DayButton1" to="." method="_on_day_button_1_pressed"]
 [connection signal="pressed" from="MenuButtons/DayButton2" to="." method="_on_day_button_2_pressed"]
 [connection signal="pressed" from="MenuButtons/DayButton3" to="." method="_on_day_button_3_pressed"]

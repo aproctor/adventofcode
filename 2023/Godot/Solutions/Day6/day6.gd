@@ -2,7 +2,7 @@ extends Day
 
 class_name Day6
 
-func part_1(input) -> String:
+func part_1(input):
 	var product = 1;
 	var output = ""
 	
@@ -57,9 +57,9 @@ func part_1(input) -> String:
 		index += 1
 		
 	output += "Part 1: %d\n" % [product]	
-	return output
+	finish(output)
 
-func part_2(input) -> String:
+func part_2(input):
 	var product = 1;
 	var output = "Part 2\n"
 	
@@ -115,4 +115,4 @@ func part_2(input) -> String:
 	var winning_ways = x2 - x1 + 1
 	
 	output += "Part 2: %d\n" % [winning_ways]	
-	return output
+	finish(output)
