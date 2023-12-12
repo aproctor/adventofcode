@@ -51,7 +51,7 @@ input_files = Array[String](["res://Solutions/Day7/day7_sample.txt", "res://Solu
 
 [node name="Day8" type="Node" parent="Days"]
 script = ExtResource("9_anwfr")
-input_files = Array[String](["res://Solutions/Day8/day8_sample.txt", "res://Solutions/Day8/day8_data.txt"])
+input_files = Array[String](["res://Solutions/Day8/day8_sample2.txt", "res://Solutions/Day8/day8_sample.txt", "res://Solutions/Day8/day8_data.txt"])
 
 [node name="MenuButtons" type="GridContainer" parent="."]
 layout_mode = 0
