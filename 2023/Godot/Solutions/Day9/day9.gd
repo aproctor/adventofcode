@@ -56,4 +56,22 @@ func part_1(input):
 	
 	output += "Total = " + str(total)	
 	finish(output)
+	
+func part_2(input):
+	var total = 0;
+	var output = ""
+		
+	var dataRegex = RegEx.new();
+	dataRegex.compile("\\d+")
+	
+	for input_line in input.split("\n"):
+		var sequence = input_line.split_floats(" ", false)
+		if(sequence.size() > 0):
+			sequence.reverse()
+			var next_value = find_next_value(sequence)		
+			output += "Next value for %s is %d\n" % [sequence, next_value]
+			total += next_value	
+	
+	output += "Total = " + str(total)	
+	finish(output)
 
