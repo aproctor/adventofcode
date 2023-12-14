@@ -5,6 +5,8 @@ class_name Day10
 @export var mainWindow : Window = null
 @export var pipeCanvas : Node = null
 @export var pipeSprites : Array[Resource] = []
+@export var outsideTile : PackedScene
+@export var insideTile : PackedScene
 
 const SPRITE_SIZE = 32
 
@@ -57,12 +59,8 @@ func part_1(input):
 		y += 1
 
 	fix_start_pipe(start_pipe, pipes)
-	#scale_canvas(x/4.0, y/4.0)
+	scale_canvas(x/2.0, y/2.0)
 	
-	var fPipe = Pipe.new(0,0,"F")
-	var hPipe = Pipe.new(0,0,"-")
-	print("-F connects?: %s" % [fPipe.connects_with(hPipe, Pipe.Directions.LEFT)])
-
 	#Traverse the pipes
 	var active_pipes = [start_pipe]
 	for i in 10000:
@@ -79,8 +77,94 @@ func part_1(input):
 		active_pipes = unvisited_neghbours
 		if(active_pipes.size() == 0):
 			break
-		#await get_tree().create_timer(0.4).timeout #process_frame	
+		#await get_tree().create_timer(0.1).timeout
+		await get_tree().process_frame	
 		total += 1
+	
+	output += "Total = " + str(total)
+	
+	finish(output)
+
+func part_2(input):
+	var total = 0;
+	var output = ""
+	var pipes = {}
+	
+	var dataRegex = RegEx.new()
+	dataRegex.compile("^([|\\-LJ7F\\.S]+)$")
+	
+	mainWindow.show()
+		
+	var x = 0
+	var y = 0
+	
+	#Clear existing Pipes
+	for c in pipeCanvas.get_children():
+		pipeCanvas.remove_child(c)
+		c.queue_free()
+	
+	#Spawn new pipes
+	var start_pipe = null
+	for input_line in input.split("\n"):
+		var matchResult = dataRegex.search(input_line)
+		if(matchResult):
+			x = 0
+			for c in input_line:
+				if(c != "."):
+					var coord = "%d,%d" % [x, y]
+					var pipe = Pipe.new(x, y, c)
+					pipes[coord] = pipe
+					
+					if(c == "S"):
+						start_pipe = pipe
+						pipe.used = true
+					else:
+						update_sprite(pipe)
+
+				x += 1
+		y += 1
+
+	fix_start_pipe(start_pipe, pipes)
+	scale_canvas(x/2.0, y/2.0)
+	
+	#Traverse the pipes
+	var active_pipes = [start_pipe]
+	for i in 10000:
+		var unvisited_neghbours = []
+		for cur_pipe in active_pipes:
+			cur_pipe.used = true
+			update_sprite(cur_pipe)
+			
+			var connections = pipe_connections(cur_pipe, pipes)	
+			for p in connections:
+				if(p != null && !p.used):
+					unvisited_neghbours.append(p)
+		
+		active_pipes = unvisited_neghbours
+		if(active_pipes.size() == 0):
+			break
+		#await get_tree().create_timer(0.1).timeout
+		#await get_tree().process_frame	
+	
+	var tile_sprite = null
+	for y2 in y:
+		var crossed_lines = 0
+		for x2 in x:
+			var coord = "%d,%d" % [x2, y2]
+			if(pipes.has(coord)):
+				var pipe = pipes[coord]
+				if(pipe.used):
+					crossed_lines += 1
+					continue
+			
+			if((crossed_lines) % 2 == 0):
+				tile_sprite = outsideTile.instantiate()
+			else:
+				tile_sprite = insideTile.instantiate()
+			pipeCanvas.add_child(tile_sprite)
+			tile_sprite.position = Vector2(SPRITE_SIZE*x2, SPRITE_SIZE*y2)
+	
+	
 	
 	output += "Total = " + str(total)
 	

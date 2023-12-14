@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b2dgewktcwa2b"]
+[gd_scene load_steps=26 format=3 uid="uid://b2dgewktcwa2b"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fx4et"]
 [ext_resource type="Script" path="res://Solutions/Day1/day1.gd" id="2_v8mcb"]
@@ -23,6 +23,8 @@
 [ext_resource type="PackedScene" uid="uid://cyomx2rsltnd1" path="res://Solutions/Day10/Pipes/gold/pipe_v.tscn" id="16_y2l22"]
 [ext_resource type="PackedScene" uid="uid://8btsih4jiur2" path="res://Solutions/Day10/Pipes/grey/pipe_v.tscn" id="17_dmymc"]
 [ext_resource type="PackedScene" uid="uid://de0uqgcvu0xfv" path="res://Solutions/Day10/Pipes/gold/pipe_L.tscn" id="22_gb8kk"]
+[ext_resource type="PackedScene" uid="uid://dsv8xxlmh2lai" path="res://Solutions/Day10/Pipes/outside_tile.tscn" id="24_0yhu0"]
+[ext_resource type="PackedScene" uid="uid://b38sv11hupdkg" path="res://Solutions/Day10/Pipes/inside_tile.tscn" id="25_anq8n"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -76,6 +78,8 @@ script = ExtResource("11_glhu4")
 mainWindow = NodePath("Window")
 pipeCanvas = NodePath("Window/CanvasGroup")
 pipeSprites = Array[Resource]([ExtResource("12_u7kqs"), ExtResource("13_hn7d8"), ExtResource("14_k6w4u"), ExtResource("15_u3w5t"), ExtResource("16_xrgqx"), ExtResource("17_dmymc"), ExtResource("12_vwf5v"), ExtResource("13_362qw"), ExtResource("14_fgskl"), ExtResource("15_4mk6b"), ExtResource("22_gb8kk"), ExtResource("16_y2l22")])
+outsideTile = ExtResource("24_0yhu0")
+insideTile = ExtResource("25_anq8n")
 input_files = Array[String](["res://Solutions/Day10/day10_sample.txt", "res://Solutions/Day10/day10_data.txt"])
 
 [node name="Window" type="Window" parent="Days/Day10"]

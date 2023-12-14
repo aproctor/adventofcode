@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsv8xxlmh2lai"]
+
+[ext_resource type="Texture2D" uid="uid://ba5fi2qodbs35" path="res://Solutions/Day10/white_tile.png" id="1_w81f2"]
+
+[node name="OutsideTile" type="Sprite2D"]
+modulate = Color(0, 0.227451, 0.858824, 0.239216)
+texture = ExtResource("1_w81f2")
