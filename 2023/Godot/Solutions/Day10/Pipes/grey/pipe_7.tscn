@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhs5fx8jqlf77"]
+
+[ext_resource type="Texture2D" uid="uid://23o4yishpw14" path="res://Solutions/Day10/Pipes/grey/greypipes.png" id="1_mfqdg"]
+
+[node name="pipe_7" type="Sprite2D"]
+texture = ExtResource("1_mfqdg")
+region_enabled = true
+region_rect = Rect2(64, 0, 32, 32)

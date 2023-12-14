@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d23lnym2pdngy"]
+
+[ext_resource type="Texture2D" uid="uid://c776gajl57vpq" path="res://Solutions/Day10/Pipes/gold/goldenpipes.png" id="1_5koc4"]
+
+[node name="pipe_F" type="Sprite2D"]
+texture = ExtResource("1_5koc4")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)

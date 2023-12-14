@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b2dgewktcwa2b"]
+[gd_scene load_steps=24 format=3 uid="uid://b2dgewktcwa2b"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fx4et"]
 [ext_resource type="Script" path="res://Solutions/Day1/day1.gd" id="2_v8mcb"]
@@ -10,6 +10,19 @@
 [ext_resource type="Script" path="res://Solutions/Day7/day7.gd" id="8_glxiw"]
 [ext_resource type="Script" path="res://Solutions/Day8/day8.gd" id="9_anwfr"]
 [ext_resource type="Script" path="res://Solutions/Day9/day9.gd" id="10_51sy1"]
+[ext_resource type="Script" path="res://Solutions/Day10/day10.gd" id="11_glhu4"]
+[ext_resource type="PackedScene" uid="uid://dhs5fx8jqlf77" path="res://Solutions/Day10/Pipes/grey/pipe_7.tscn" id="12_u7kqs"]
+[ext_resource type="PackedScene" uid="uid://cmj0ar6uecc8m" path="res://Solutions/Day10/Pipes/gold/pipe_7.tscn" id="12_vwf5v"]
+[ext_resource type="PackedScene" uid="uid://d23lnym2pdngy" path="res://Solutions/Day10/Pipes/gold/pipe_f.tscn" id="13_362qw"]
+[ext_resource type="PackedScene" uid="uid://clal43a03nd2p" path="res://Solutions/Day10/Pipes/grey/pipe_f.tscn" id="13_hn7d8"]
+[ext_resource type="PackedScene" uid="uid://df25o3wlpfunv" path="res://Solutions/Day10/Pipes/gold/pipe_h.tscn" id="14_fgskl"]
+[ext_resource type="PackedScene" uid="uid://ba77k2wi2mmec" path="res://Solutions/Day10/Pipes/grey/pipe_h.tscn" id="14_k6w4u"]
+[ext_resource type="PackedScene" uid="uid://u76y6uevc2ad" path="res://Solutions/Day10/Pipes/gold/pipe_j.tscn" id="15_4mk6b"]
+[ext_resource type="PackedScene" uid="uid://ch6pgtn88lkl3" path="res://Solutions/Day10/Pipes/grey/pipe_j.tscn" id="15_u3w5t"]
+[ext_resource type="PackedScene" uid="uid://dmfx4oyk1nmc8" path="res://Solutions/Day10/Pipes/grey/pipe_L.tscn" id="16_xrgqx"]
+[ext_resource type="PackedScene" uid="uid://cyomx2rsltnd1" path="res://Solutions/Day10/Pipes/gold/pipe_v.tscn" id="16_y2l22"]
+[ext_resource type="PackedScene" uid="uid://8btsih4jiur2" path="res://Solutions/Day10/Pipes/grey/pipe_v.tscn" id="17_dmymc"]
+[ext_resource type="PackedScene" uid="uid://de0uqgcvu0xfv" path="res://Solutions/Day10/Pipes/gold/pipe_L.tscn" id="22_gb8kk"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -57,6 +70,22 @@ input_files = Array[String](["res://Solutions/Day8/day8_sample2.txt", "res://Sol
 [node name="Day9" type="Node" parent="Days"]
 script = ExtResource("10_51sy1")
 input_files = Array[String](["res://Solutions/Day9/day9_sample.txt", "res://Solutions/Day9/day9_data.txt"])
+
+[node name="Day10" type="Node" parent="Days" node_paths=PackedStringArray("mainWindow", "pipeCanvas")]
+script = ExtResource("11_glhu4")
+mainWindow = NodePath("Window")
+pipeCanvas = NodePath("Window/CanvasGroup")
+pipeSprites = Array[Resource]([ExtResource("12_u7kqs"), ExtResource("13_hn7d8"), ExtResource("14_k6w4u"), ExtResource("15_u3w5t"), ExtResource("16_xrgqx"), ExtResource("17_dmymc"), ExtResource("12_vwf5v"), ExtResource("13_362qw"), ExtResource("14_fgskl"), ExtResource("15_4mk6b"), ExtResource("22_gb8kk"), ExtResource("16_y2l22")])
+input_files = Array[String](["res://Solutions/Day10/day10_sample.txt", "res://Solutions/Day10/day10_data.txt"])
+
+[node name="Window" type="Window" parent="Days/Day10"]
+title = "Day 10"
+initial_position = 2
+size = Vector2i(700, 500)
+visible = false
+
+[node name="CanvasGroup" type="CanvasGroup" parent="Days/Day10/Window"]
+position = Vector2(10, 10)
 
 [node name="MenuButtons" type="GridContainer" parent="."]
 layout_mode = 0
@@ -114,7 +143,6 @@ text = "Day 9"
 [node name="DayButton10" type="Button" parent="MenuButtons"]
 custom_minimum_size = Vector2(90, 45)
 layout_mode = 2
-disabled = true
 text = "Day 10"
 
 [node name="DayButton11" type="Button" parent="MenuButtons"]
