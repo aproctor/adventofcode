@@ -23,3 +23,17 @@ leftList.length.times do |i|
 end
 
 puts "Part 1 Distance: #{distance}"
+
+
+part2 = 0
+leftList.length.times do |i|
+  rightList.length.times do |j|
+    left = leftList[i]
+    right = rightList[j]
+
+    if(left == right)
+      part2 += left
+    end
+  end
+end
+puts "Part 2 value: #{part2}"
