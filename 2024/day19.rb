@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# See http://adventofcode.com/2022/day/19
+# See http://adventofcode.com/2024/day/19
 
 File.open('day19.data').each do |line|
   next if(line.nil?)
