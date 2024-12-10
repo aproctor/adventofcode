@@ -1,18 +1,141 @@
 #!/usr/bin/env ruby
 # See http://adventofcode.com/2024/day/6
 
-File.open('day6.data').each do |line|
-  next if(line.nil?)
-  md = line.match(/day ([0-9]+)/)
-  if(!md.nil?)
-    puts md[1]
+DIRECTIONS = {
+  :up => { :x => 0, :y => -1, :sym => '^' },
+  :down => { :x => 0, :y => 1, :sym => 'v' },
+  :left => { :x => -1, :y => 0, :sym => '<' },
+  :right => { :x => 1, :y => 0, :sym => '>' }
+}
+
+class Guard
+  attr_accessor :x, :y, :dir, :visited_points
+
+  def initialize(x, y, dir)
+    @x = x
+    @y = y
+    @dir = dir
+    @visited_points = {}
+    visit(x, y)
+  end
+
+  def visit(x, y)
+    key = "#{x},#{y}"
+    @visited_points[key] = true
+  end
+
+  def visited?(x, y)
+    key = "#{x},#{y}"
+    return @visited_points[key] || false
+  end
+
+  def next_dir()
+    case @dir
+    when :up
+      return :right
+    when :right
+      return :down
+    when :down
+      return :left
+    when :left
+      return :up
+    end
   end
 end
 
-# class Node
-#   attr_accessor :val
+class Board
+  attr_accessor :obstructions, :guard
 
-#   def initialize(val)
-#     @val = val
-#   end
-# end
+  def initialize()
+    @obstructions = []
+    @height = 0
+    @width = 0
+    @guard = nil
+  end
+
+  def add_row(line)
+    y = @height
+    line.each_char.with_index do |c, i|
+      if(c == '#')
+        @obstructions.push({ :x => i, :y => y})
+      end
+      if(c == '^')
+        @guard = Guard.new(i, y, :up)
+      end
+    end
+    @height += 1
+
+    @width = line.length if line.length > @width
+  end
+
+  def out_of_bounds?(x, y)
+    return x < 0 || y < 0 || x >= @width || y >= @height
+  end
+
+  def step()
+    return if(@guard.nil?)
+
+    new_x = @guard.x + DIRECTIONS[@guard.dir][:x]
+    new_y = @guard.y + DIRECTIONS[@guard.dir][:y]
+
+    if(out_of_bounds?(new_x, new_y))
+      self.print
+      puts "Guard out of bounds, total visited spaces = #{guard.visited_points.length}"
+      @guard = nil
+      return
+    end
+
+    if(@obstructions.any? { |o| o[:x] == new_x && o[:y] == new_y })
+      @guard.dir = @guard.next_dir
+      return
+    end
+
+    @guard.x = new_x
+    @guard.y = new_y
+    @guard.visit(new_x, new_y)
+  end
+
+  def print
+    @height.times do |y|
+      row = ''
+      @width.times do |x|
+        if(@obstructions.any? { |o| o[:x] == x && o[:y] == y })
+          row += '#'
+        elsif(@guard && @guard.x == x && @guard.y == y)
+          row += "\e[32m"
+          row += DIRECTIONS[@guard.dir][:sym]
+          row += "\e[0m"
+        elsif(@guard && @guard.visited?(x, y))
+          row += "\e[31mX\e[0m"
+        else
+          row += '.'
+        end
+      end
+      puts row
+    end
+  end
+end
+
+
+board = Board.new
+File.open('day6.data').each do |line|
+  next if(line.nil?)
+  board.add_row(line.strip)
+end
+
+board.print
+
+ITERATIONS = 10000
+STEPS_PER_ITERATION = 2000
+
+ITERATIONS.times do
+  puts "\n"
+  # wait for input
+  command = gets
+  break if command.nil? || command.strip == 'q' || board.guard.nil?
+
+  STEPS_PER_ITERATION.times do
+    board.step
+  end
+  board.print unless board.guard.nil?
+end
