@@ -126,13 +126,15 @@ end
 board.print
 
 ITERATIONS = 10000
-STEPS_PER_ITERATION = 2000
+STEPS_PER_ITERATION = 10000
 
 ITERATIONS.times do
   puts "\n"
   # wait for input
   command = gets
   break if command.nil? || command.strip == 'q' || board.guard.nil?
+
+  puts "\e[H\e[2J" #clear screen
 
   STEPS_PER_ITERATION.times do
     board.step
