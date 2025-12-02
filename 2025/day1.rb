@@ -7,6 +7,7 @@ position = 50
 STEPS = 100
 p1_count = 0
 p2_count = 0
+p2_position = position
 
 def int_to_word(number)
   case number
@@ -36,14 +37,26 @@ File.open('day1.data').each do |line|
       position += steps
     end
 
-    clicks = position == 0 ? 1 : (position / STEPS).abs
-    if clicks > 0 && previous_position == 0 && position < 0
-      clicks -= 1
+    position = position % STEPS
+
+    # Calculate how many times we passed 0 during this move
+    clicks = 0
+    delta = (dir == 'L' ? -1 : 1)
+    steps.times do |step|
+      p2_position += delta
+      p2_position = 0 if(p2_position == STEPS)
+
+      if(p2_position == 0)
+        p2_count += 1
+        clicks += 1
+      elsif(p2_position < 0)
+        p2_position = STEPS - 1
+      elsif(p2_position >= STEPS)
+        p2_position = 0
+      end
     end
 
-    p2_count += clicks
 
-    position = position % STEPS
 
     print "The dial is rotated #{dir}#{steps} to point at #{position}"
     print "; during this rotation, it points at 0 #{int_to_word(clicks)}" if clicks > 0
