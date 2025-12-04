@@ -56,7 +56,7 @@ max_y.times do |cy|
         p1_total += 1
         print "x"
       else
-        print rolls_map[pos]
+        print "@"
       end
     else
       print "."
@@ -66,3 +66,39 @@ max_y.times do |cy|
 end
 
 puts "Part 1: #{p1_total}"
+
+# Part 2
+p2_total = 0
+max_iterations = rolls_map.size
+max_iterations.times do |iteration|
+  puts "Iteration #{iteration}:"
+  iteraction_total = 0
+  max_y.times do |cy|
+    #print "#{cy}: "
+    max_x.times do |cx|
+      pos = coord(cx, cy)
+      if rolls_map.key?(pos)
+        count = count_neighbors(cx, cy, rolls_map)
+        if count < 4
+          iteraction_total += 1
+          print "x"
+          rolls_map.delete(pos)
+        else
+          print "@"
+        end
+      else
+        print "."
+      end
+    end
+    puts ""
+  end
+
+  puts "removed total: #{iteraction_total}"
+  p2_total += iteraction_total
+
+  if iteraction_total == 0
+    break
+  end
+end
+
+puts "Part 2: #{p2_total}"
