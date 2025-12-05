@@ -44,3 +44,32 @@ File.open('day5.data').each do |line|
 end
 
 puts "Part 1: #{p1_count}"
+
+
+# Part 2, merge like ranges
+def merge_ranges(ranges)
+  sorted = ranges.sort_by {|r| r[0]}
+  merged = []
+  current = sorted[0]
+
+  sorted[1..-1].each do |r|
+    if(r[0] <= current[1] + 1)
+      # overlapping or contiguous ranges, merge them
+      current[1] = [current[1], r[1]].max
+    else
+      # no overlap, push current and move to next
+      merged << current
+      current = r
+    end
+  end
+  merged << current if current
+  merged
+end
+merged_ranges = merge_ranges(ranges)
+#puts "Merged ranges: #{merged_ranges.inspect}"
+
+p2_count = 0
+merged_ranges.each do |r|
+  p2_count += (r[1] - r[0] + 1)
+end
+puts "Part 2: #{p2_count}"
