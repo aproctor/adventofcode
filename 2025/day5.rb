@@ -65,6 +65,7 @@ def merge_ranges(ranges)
   merged << current if current
   merged
 end
+
 merged_ranges = merge_ranges(ranges)
 #puts "Merged ranges: #{merged_ranges.inspect}"
 
